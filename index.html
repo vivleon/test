@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>여수 관문동 프로젝트 현황 대시보드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 320px;
+            width: 100%;
+            max-width: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .kpi-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .tab-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .tab-button.active {
+            background-color: #1e3a8a;
+            color: white;
+            border-bottom-width: 4px;
+            border-color: #3b82f6;
+        }
+        .tab-button:not(.active) {
+            background-color: #e5e7eb;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+<!-- Chosen Palette: Calm Neutrals (Light Gray, White) with a professional Blue and supportive Green/Orange/Red for accents. -->
+<!-- Application Structure Plan: A top-down dashboard approach. It starts with high-level Key Performance Indicators (KPIs) for immediate status assessment. This is followed by a visual breakdown of the entire project portfolio (184 units) into strategic groups. The core of the app is an interactive deep-dive section where users can click on each strategic group to see its specific composition and associated tasks. This structure was chosen to guide decision-makers from the "what" (current status) to the "so what" (strategic implications) and finally to the "now what" (actionable tasks), which is more effective than a linear report. -->
+<!-- Visualization & Content Choices: 
+- KPI Dashboard: Goal: Inform. Method: Large text stats in cards and a progress bar. Interaction: None, for quick reading. Justification: Provides the most critical numbers instantly.
+- Overall Status Donut Chart: Goal: Inform/Compare. Method: Chart.js Doughnut chart. Interaction: Hover tooltips. Justification: Visually represents the critical proportion of 'Confirmed' vs. 'Target' vs. 'Risk' units, highlighting the project's overall health.
+- Strategic Deep Dive: Goal: Organize/Analyze. Method: Interactive tabs controlling a dynamically updated horizontal bar chart (Chart.js) and text blocks. Interaction: Click tabs to change displayed data. Justification: Allows users to actively explore each of the three core strategies ('Confirmed', 'Core Management', 'Risk/Resale') and understand their components and required actions without being overwhelmed by all the information at once.
+- Resale Scenario Bar Chart: Goal: Inform/Compare. Method: Chart.js Bar chart. Interaction: Hover tooltips. Justification: Clearly presents the potential financial outcomes of the resale strategy.
+- All visualizations use Chart.js on a Canvas element, adhering to the NO SVG/Mermaid requirement. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">여수 관문동 더로제아델리움 현황</h1>
+            <p class="text-lg text-gray-600 mt-2">프로젝트 목표 관리 대시보드 (2025. 10. 23. 기준)</p>
+        </header>
+
+        <main>
+            <!-- Section 1: Key Performance Indicators -->
+            <section id="dashboard" class="mb-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="kpi-card bg-white p-6 rounded-lg shadow-md text-center">
+                        <h3 class="text-lg font-semibold text-gray-500">총 세대수 (주택)</h3>
+                        <p class="text-4xl font-bold text-blue-900 mt-2">184<span class="text-2xl ml-1">세대</span></p>
+                    </div>
+                    <div class="kpi-card bg-white p-6 rounded-lg shadow-md text-center">
+                        <h3 class="text-lg font-semibold text-gray-500">확정 세대 (완납/계약)</h3>
+                        <p class="text-4xl font-bold text-green-600 mt-2">37<span class="text-2xl ml-1">세대</span></p>
+                        <p class="text-sm text-gray-500 mt-1">전체 대비 20.1%</p>
+                    </div>
+                    <div class="kpi-card bg-white p-6 rounded-lg shadow-md text-center">
+                        <h3 class="text-lg font-semibold text-gray-500">1차 목표 추가 필요</h3>
+                        <p class="text-4xl font-bold text-orange-500 mt-2">75<span class="text-2xl ml-1">세대</span></p>
+                        <p class="text-sm text-gray-500 mt-1">'예정'(47) + '촉진-C'(28)</p>
+                    </div>
+                    <div class="kpi-card bg-white p-6 rounded-lg shadow-md text-center col-span-1 md:col-span-2 lg:col-span-1">
+                        <h3 class="text-lg font-semibold text-gray-500">리스크 및 재판매 대상</h3>
+                        <p class="text-4xl font-bold text-red-600 mt-2">72<span class="text-2xl ml-1">세대</span></p>
+                        <p class="text-sm text-gray-500 mt-1">전체 대비 39.1%</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+                    <h3 class="text-xl font-bold text-gray-700 text-center">1차 목표 (110세대) 달성 현황</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-6 mt-4">
+                        <div id="progress-bar" class="bg-blue-600 h-6 rounded-full text-center text-white text-sm leading-6" style="width: 0%;">
+                            33.6%
+                        </div>
+                    </div>
+                    <p class="text-center text-gray-600 mt-2">현재 <span class="font-bold">37</span> / 110 세대 확정</p>
+                </div>
+            </section>
+
+            <!-- Section 2: Overall Status Visualization -->
+            <section id="overview" class="mb-12 bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold text-center text-gray-900 mb-2">184세대 전체 현황 분석</h2>
+                <p class="text-center text-gray-600 mb-6">전체 세대는 현재 `확정`, `핵심 관리`, `리스크/재판매` 3개 그룹으로 관리되고 있습니다. 이 구성은 프로젝트의 현재 안정성과 미래 과제를 보여줍니다.</p>
+                <div class="chart-container">
+                    <canvas id="overviewChart"></canvas>
+                </div>
+            </section>
+
+            <!-- NEW Section 3: Project Management Flowchart -->
+            <section id="flowchart" class="mb-12 bg-white p-6 md:p-8 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold text-center text-gray-900 mb-2">프로젝트 관리 흐름도</h2>
+                <p class="text-center text-gray-600 mb-10">184세대 전체 관리 흐름 및 그룹별 핵심 과제 요약입니다.</p>
+                
+                <div class="flex flex-col items-center">
+                    <!-- 1. Root Node -->
+                    <div class="px-6 py-3 bg-blue-900 text-white rounded-lg shadow-xl font-bold text-lg z-10">
+                        총 184 세대
+                    </div>
+                    
+                    <!-- 2. Main connector -->
+                    <div class="w-1 h-8 bg-gray-300"></div>
+
+                    <!-- 3. Main Branches Container -->
+                    <div class="w-full flex flex-col md:flex-row md:justify-around md:items-start gap-8 md:gap-4">
+                        
+                        <!-- Branch 1: 확정 -->
+                        <div class="flex-1 flex flex-col items-center px-2">
+                            <!-- Connector (T-shape for desktop) -->
+                            <div class="w-full h-8 relative hidden md:block">
+                                <div class="w-full h-1 bg-gray-300 absolute left-0 top-0"></div>
+                                <div class="w-1 h-full bg-gray-300 absolute left-1/2 -translate-x-1/2 top-0"></div>
+                            </div>
+                            <!-- Node -->
+                            <div class="p-4 bg-green-50 border-2 border-green-500 rounded-lg shadow-md text-center w-full min-h-[160px]">
+                                <h4 class="text-lg font-bold text-green-800">그룹 1: 확정</h4>
+                                <p class="text-2xl font-bold text-green-700 my-1">37<span class="text-base font-medium ml-1">세대</span></p>
+                                <p class="mt-2 font-semibold text-green-900">▶ 관리 완료</p>
+                                <p class="text-sm text-gray-700">(현금 확보)</p>
+                            </div>
+                        </div>
+
+                        <!-- Branch 2: 핵심 관리 -->
+                        <div class="flex-1 flex flex-col items-center px-2">
+                            <!-- Connector (T-shape for desktop, simple line for mobile) -->
+                            <div class="w-full h-8 relative hidden md:block">
+                                <div class="w-full h-1 bg-gray-300 absolute left-0 top-0"></div>
+                                <div class="w-1 h-full bg-gray-300 absolute left-1/2 -translate-x-1/2 top-0"></div>
+                            </div>
+                            <div class="w-1 h-8 bg-gray-300 md:hidden"></div>
+                            <!-- Node -->
+                            <div class="p-4 bg-orange-50 border-2 border-orange-500 rounded-lg shadow-md text-center w-full min-h-[160px]">
+                                <h4 class="text-lg font-bold text-orange-800">그룹 2: 핵심 관리</h4>
+                                <p class="text-2xl font-bold text-orange-700 my-1">75<span class="text-base font-medium ml-1">세대</span></p>
+                                <p class="mt-2 font-semibold text-orange-900">▶ 1차 목표 대상</p>
+                                <p class="text-sm text-gray-700">(Task: 완납 전환)</p>
+                            </div>
+                            <!-- Sub-connector -->
+                            <div class="w-1 h-6 bg-gray-300"></div>
+                            <!-- Sub-Branches -->
+                            <div class="w-full flex flex-col sm:flex-row gap-4">
+                                <div class="flex-1 p-3 bg-white border border-orange-400 rounded-md text-center shadow-sm">
+                                    <p class="font-semibold">`예정` (47)</p>
+                                    <p class="text-sm text-gray-600">Task: 대출 해결</p>
+                                </div>
+                                <div class="flex-1 p-3 bg-white border border-orange-400 rounded-md text-center shadow-sm">
+                                    <p class="font-semibold">`촉진-C` (28)</p>
+                                    <p class="text-sm text-gray-600">Task: 완납 유도</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Branch 3: 리스크 -->
+                        <div class="flex-1 flex flex-col items-center px-2">
+                            <!-- Connector (T-shape for desktop, simple line for mobile) -->
+                            <div class="w-full h-8 relative hidden md:block">
+                                <div class="w-full h-1 bg-gray-300 absolute left-0 top-0"></div>
+                                <div class="w-1 h-full bg-gray-300 absolute left-1/2 -translate-x-1/2 top-0"></div>
+                            </div>
+                             <div class="w-1 h-8 bg-gray-300 md:hidden"></div>
+                            <!-- Node -->
+                            <div class="p-4 bg-red-50 border-2 border-red-500 rounded-lg shadow-md text-center w-full min-h-[160px]">
+                                <h4 class="text-lg font-bold text-red-800">그룹 3: 리스크/재판매</h4>
+                                <p class="text-2xl font-bold text-red-700 my-1">72<span class="text-base font-medium ml-1">세대</span></p>
+                                <p class="mt-2 font-semibold text-red-900">▶ 리스크 관리</p>
+                                <p class="text-sm text-gray-700">(Task: 재판매 전환)</p>
+                            </div>
+                            <!-- Sub-connector -->
+                            <div class="w-1 h-6 bg-gray-300"></div>
+                            <!-- Sub-Branches -->
+                            <div class="w-full flex flex-col gap-4">
+                                <div class="flex flex-col sm:flex-row gap-4">
+                                    <div class="flex-1 p-3 bg-white border border-red-400 rounded-md text-center shadow-sm">
+                                        <p class="font-semibold">`리스크` (33)</p>
+                                        <p class="text-sm text-gray-600">Task: 신속 해지</p>
+                                    </div>
+                                    <div class="flex-1 p-3 bg-white border border-red-400 rounded-md text-center shadow-sm">
+                                        <p class="font-semibold">`분양팀 잔여` (34)</p>
+                                        <p class="text-sm text-gray-600">Task: 즉시 재판매</p>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-white border border-gray-400 rounded-md text-center shadow-sm">
+                                    <p class="font-semibold">`대물` (5)</p>
+                                    <p class="text-sm text-gray-600">Task: 별도 관리</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Strategic Group Deep Dive (was Section 3) -->
+            <section id="deep-dive" class="mb-12">
+                 <h2 class="text-2xl font-bold text-center text-gray-900 mb-2">그룹별 세부 전략 및 과제</h2>
+                 <p class="text-center text-gray-600 mb-6">각 그룹을 선택하여 세부 구성과 당면 과제를 확인하세요. 이는 1차 목표 달성을 위한 핵심 전략입니다.</p>
+                <div class="flex justify-center space-x-2 md:space-x-4 mb-6 rounded-lg p-1 bg-gray-200">
+                    <button id="btn-core" class="tab-button flex-1 py-3 px-4 rounded-md font-bold text-sm md:text-base">핵심 관리 대상</button>
+                    <button id="btn-confirmed" class="tab-button flex-1 py-3 px-4 rounded-md font-bold text-sm md:text-base">확정</button>
+                    <button id="btn-risk" class="tab-button flex-1 py-3 px-4 rounded-md font-bold text-sm md:text-base">리스크/재판매</button>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div id="group-details" class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+                        <div>
+                            <h3 id="group-title" class="text-2xl font-bold text-blue-900"></h3>
+                            <p id="group-subtitle" class="text-gray-500 mb-4"></p>
+                            <div id="group-task" class="mt-4 p-4 rounded-lg bg-blue-50 border-l-4 border-blue-500">
+                                <p id="group-task-text" class="text-blue-800 font-medium"></p>
+                            </div>
+                        </div>
+                        <div class="chart-container h-64 md:h-80">
+                            <canvas id="groupDetailChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Section 5: Resale Scenario (was Section 4) -->
+            <section id="resale" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold text-center text-gray-900 mb-2">재판매 시나리오 (67세대 기준)</h2>
+                <p class="text-center text-gray-600 mb-6">'리스크' 그룹과 '분양팀 잔여' 물량의 100% 할인 분양 시 예상되는 총 확보 금액입니다.</p>
+                <div class="chart-container h-80 md:h-96 max-w-3xl">
+                    <canvas id="resaleChart"></canvas>
+                </div>
+                 <p class="text-center text-2xl font-bold text-gray-800 mt-6">총 예상 금액: <span class="text-blue-700">183.13 억</span></p>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = {
+                totalUnits: 184,
+                groups: {
+                    confirmed: {
+                        label: '확정',
+                        count: 37,
+                        color: 'rgba(22, 163, 74, 0.7)',
+                        task: '확실한 현금 확보 완료.',
+                        breakdown: {
+                            labels: ['잔금 완납', '분양팀 완납', '분양팀 전세계약'],
+                            data: [20, 1, 16],
+                            colors: ['#15803d', '#16a34a', '#4ade80']
+                        }
+                    },
+                    core: {
+                        label: '핵심 관리 대상',
+                        count: 75,
+                        color: 'rgba(249, 115, 22, 0.7)',
+                        task: '1차 목표 달성의 Key! 예정 세대의 완납 전환 및 촉진 세대의 완납 유도에 총력을 기울여야 합니다.',
+                        breakdown: {
+                            labels: ['`예정` (입주의사)', '`촉진-C` (관리 가능)'],
+                            data: [47, 28],
+                            colors: ['#f97316', '#fb923c']
+                        }
+                    },
+                    risk: {
+                        label: '리스크/재판매',
+                        count: 72,
+                        color: 'rgba(220, 38, 38, 0.7)',
+                        task: '신속한 해지 절차를 통해 재판매 대상으로 즉시 전환하여 리스크를 최소화해야 합니다.',
+                        breakdown: {
+                            labels: ['분양팀 잔여', '`리스크` 그룹', '대물(별도관리)'],
+                            data: [34, 33, 5],
+                            colors: ['#dc2626', '#ef4444', '#f87171']
+                        }
+                    }
+                },
+                resale: {
+                    labels: ['분양팀 (34세대)', '촉진 해지 (19세대)', '연체/부결 (14세대)'],
+                    data: [125.16, 23.18, 34.79]
+                }
+            };
+
+            const goal = {
+                target: 110,
+                current: data.groups.confirmed.count,
+            };
+
+            const progressBar = document.getElementById('progress-bar');
+            const progress = (goal.current / goal.target) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressBar.textContent = `${progress.toFixed(1)}%`;
+
+
+            let groupDetailChart;
+
+            const chartTooltip = {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed !== null) {
+                            label += `${context.parsed} 세대`;
+                        }
+                        return label;
+                    }
+                }
+            };
+            
+            const chartTooltipMoney = {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed.y !== null) {
+                            label += `${context.parsed.y} 억`;
+                        }
+                        return label;
+                    }
+                }
+            };
+
+            const ctxOverview = document.getElementById('overviewChart').getContext('2d');
+            new Chart(ctxOverview, {
+                type: 'doughnut',
+                data: {
+                    labels: [data.groups.confirmed.label, data.groups.core.label, data.groups.risk.label],
+                    datasets: [{
+                        data: [data.groups.confirmed.count, data.groups.core.count, data.groups.risk.count],
+                        backgroundColor: [data.groups.confirmed.color, data.groups.core.color, data.groups.risk.color],
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 14 }
+                            }
+                        },
+                        tooltip: chartTooltip
+                    }
+                }
+            });
+
+            const updateGroupDetails = (groupKey) => {
+                const groupData = data.groups[groupKey];
+                
+                document.getElementById('group-title').textContent = groupData.label;
+                document.getElementById('group-subtitle').textContent = `총 ${groupData.count}세대 / 전체의 ${((groupData.count / data.totalUnits) * 100).toFixed(1)}%`;
+                document.getElementById('group-task-text').textContent = groupData.task;
+
+                const ctxGroupDetail = document.getElementById('groupDetailChart').getContext('2d');
+                if (groupDetailChart) {
+                    groupDetailChart.destroy();
+                }
+                groupDetailChart = new Chart(ctxGroupDetail, {
+                    type: 'bar',
+                    data: {
+                        labels: groupData.breakdown.labels,
+                        datasets: [{
+                            label: '세대수',
+                            data: groupData.breakdown.data,
+                            backgroundColor: groupData.breakdown.colors,
+                            borderColor: '#ffffff',
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: chartTooltip
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '세대';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                if (groupKey === 'core') document.getElementById('btn-core').classList.add('active');
+                if (groupKey === 'confirmed') document.getElementById('btn-confirmed').classList.add('active');
+                if (groupKey === 'risk') document.getElementById('btn-risk').classList.add('active');
+            };
+
+            document.getElementById('btn-core').addEventListener('click', () => updateGroupDetails('core'));
+            document.getElementById('btn-confirmed').addEventListener('click', () => updateGroupDetails('confirmed'));
+            document.getElementById('btn-risk').addEventListener('click', () => updateGroupDetails('risk'));
+
+            updateGroupDetails('core');
+
+            const ctxResale = document.getElementById('resaleChart').getContext('2d');
+            new Chart(ctxResale, {
+                type: 'bar',
+                data: {
+                    labels: data.resale.labels,
+                    datasets: [{
+                        label: '예상 금액 (억)',
+                        data: data.resale.data,
+                        backgroundColor: ['#1e3a8a', '#1e40af', '#1d4ed8'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: chartTooltipMoney
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '금액 (억)'
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>
+
