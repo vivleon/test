@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduProof OS - 사업계획서 최종 통합본</title>
+    <title>EduProof OS - 최종 사업계획서 (v3.0)</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -83,7 +83,7 @@
             padding: 30px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
             transition: transform 0.2s;
-            height: 100%; /* 카드 높이 균일화 */
+            height: 100%;
         }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
         .card-header { font-weight: 700; color: var(--primary); font-size: 1.1rem; margin-bottom: 15px; border-bottom: 2px solid var(--bg-light); padding-bottom: 10px; }
@@ -94,6 +94,17 @@
             width: 100%;
         }
 
+        /* Logic Process Box (New Feature) */
+        .logic-step {
+            background: #EBF5FB;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--primary);
+        }
+        .logic-step strong { color: var(--primary); display: block; margin-bottom: 4px; }
+
         /* Tables */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; }
         th { background: var(--bg-light); color: var(--text-main); font-weight: 700; text-align: left; padding: 15px; border: 1px solid var(--border); }
@@ -102,9 +113,7 @@
         .profit-row td { background-color: #FEF9E7; color: var(--accent); font-weight: 800; font-size: 1.2rem; }
 
         /* Badge */
-        .badge-new {
-            background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; vertical-align: middle; margin-left: 5px;
-        }
+        .badge-new { background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; vertical-align: middle; margin-left: 5px; }
 
         /* Print Button */
         .print-btn {
@@ -114,7 +123,6 @@
         }
         .print-btn:hover { background: #12436b; }
         
-        /* Print Styles */
         @media print { 
             .print-btn { display: none; } 
             body { background: white; -webkit-print-color-adjust: exact; }
@@ -122,7 +130,6 @@
             header { padding: 40px 0; }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .grid-2, .grid-3 { grid-template-columns: 1fr; }
             header h1 { font-size: 2.2rem; }
@@ -136,7 +143,7 @@
     <div class="container">
         <h1>EduProof OS</h1>
         <div class="subtitle">AI & Mobile Data Platform</div>
-        <div class="tagline">Zero-Hardware • Voice Report • Smart Tracking</div>
+        <div class="tagline">Zero-Hardware • Hybrid Tagging • Voice Report</div>
         <p style="margin-top: 20px; opacity: 0.9;">
             "수치로 증명된 안전, 하드웨어 없는 혁신"<br>
             유치원 행정·안전·통학 통합 증빙 운영체계
@@ -160,8 +167,8 @@
             <div class="card">
                 <h3>💡 Solution (해결)</h3>
                 <ul>
-                    <li><strong>Zero-Hardware:</strong> 기사님 폰 앱(Driver App)만으로 관제/일지 100% 자동화.</li>
-                    <li><strong>Smart NFC:</strong> 아이 가방에 붙인 스티커 태그로 <strong>무설치 승하차 추적</strong>.</li>
+                    <li><strong>Multi-Role Tagging:</strong> 기사 또는 동승 교사가 스마트폰으로 차량 및 원아 NFC 태깅.</li>
+                    <li><strong>Hybrid Check:</strong> NFC 태깅(자동) + 분실 시 앱 수동 체크(Manual Fallback) 동시 지원.</li>
                     <li><strong>Voice AI:</strong> "철수가 넘어짐" 말하면 법정 서식 보고서 자동 생성.</li>
                 </ul>
             </div>
@@ -194,23 +201,15 @@
         <div class="grid-2">
             <div class="card">
                 <h3>💰 1. 비용 절감 효과 (Cost Efficiency)</h3>
-                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">
-                    기존 하드웨어 방식 대비 <strong>초기 도입비 100% 절감</strong> 효과.
-                </p>
-                <div class="chart-container">
-                    <canvas id="costChart"></canvas>
-                </div>
+                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">기존 하드웨어 방식 대비 <strong>초기 도입비 100% 절감</strong> 효과.</p>
+                <div class="chart-container"><canvas id="costChart"></canvas></div>
                 <span class="ref-text">* 기준: 버스 2대 운영 1년 총비용 (단말기/설치/통신 vs SaaS구독)</span>
             </div>
 
             <div class="card">
                 <h3>⏳ 2. 행정 업무 시간 단축</h3>
-                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">
-                    운행일지 및 평가 증빙 자동화로 <strong>일일 행정 업무 시간 70% 단축</strong>.
-                </p>
-                <div class="chart-container">
-                    <canvas id="timeChart"></canvas>
-                </div>
+                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">운행일지 및 평가 증빙 자동화로 <strong>일일 행정 업무 시간 70% 단축</strong>.</p>
+                <div class="chart-container"><canvas id="timeChart"></canvas></div>
                 <span class="ref-text">* 근거: 기존 수기 일지/사진 정리(60분) → 자동화(18분)</span>
             </div>
         </div>
@@ -218,12 +217,10 @@
         <div class="card" style="margin-top: 40px;">
             <h3>🚑 3. 안전사고 대응 골든타임 (Safety Response)</h3>
             <div class="grid-2">
-                <div class="chart-container">
-                    <canvas id="safetyChart"></canvas>
-                </div>
+                <div class="chart-container"><canvas id="safetyChart"></canvas></div>
                 <div style="padding-top: 10px;">
                     <ul style="font-size: 1.05rem;">
-                        <li style="margin-bottom: 15px;"><strong>미도입 시 (위험):</strong><br>사고 후 원 복귀 → PC 작성 (평균 45분 소요). 기억 왜곡 및 민원 대응 실패 리스크 <sup style="color:red">[Risk]</sup>.</li>
+                        <li style="margin-bottom: 15px;"><strong>미도입 시 (위험):</strong><br>사고 후 원 복귀 → PC 작성 (평균 45분). 기억 왜곡 및 민원 대응 실패 리스크.</li>
                         <li style="margin-bottom: 15px;"><strong>EduProof 도입 (안전):</strong><br>현장에서 음성 녹음 → <strong>즉시 리포트 생성 (3분)</strong>. 학부모/병원에 정확한 데이터 공유.</li>
                     </ul>
                     <span class="ref-text">* 참조: 학교안전공제회 사고 처리 매뉴얼 (골든타임 중요성)</span>
@@ -235,7 +232,7 @@
 
 <div class="section" style="background-color: var(--bg-light);">
     <div class="container">
-        <h2>03. 3대 핵심 솔루션 (기능)</h2>
+        <h2>03. 3대 핵심 솔루션 (기능 및 알고리즘)</h2>
         <div class="grid-3">
             <div class="card">
                 <div class="card-header">① Core (행정/안전)</div>
@@ -245,19 +242,33 @@
                     <li><strong>타임라인 리포트:</strong> 발견-조치-연락 전 과정 증빙 출력.</li>
                 </ul>
             </div>
+            
             <div class="card" style="border: 2px solid var(--secondary);">
                 <div class="card-header" style="color:var(--secondary)">② Transit (스마트 승하차) <span class="badge-new">NEW</span></div>
-                <ul>
-                    <li><strong>NFC 가방 태그:</strong> 기계 설치 없이, 기사님 폰에 아이 가방(스티커)을 태그하여 탑승 확인.</li>
-                    <li><strong>원아 누락 방지:</strong> "탑승 예정 10명 중 1명 미탑승" 시 출발 불가 알림.</li>
-                    <li><strong>자동 운행일지:</strong> 거리/시간/정차 데이터 법정 서식 매핑.</li>
-                </ul>
+                
+                <div class="logic-step">
+                    <strong>Step 1. 차량 페어링 (Responsible Tagging)</strong>
+                    운전자 또는 동승 교사가 폰으로 <strong>차량 내 부착된 NFC</strong>를 태그.<br>
+                    → <em>"지금부터 [1호차] 등원 운행을 [김선생님]이 담당합니다."</em> (부모 앱에 '1호차' 표시)
+                </div>
+                <div class="logic-step">
+                    <strong>Step 2. 원아 탑승 (Child Tagging)</strong>
+                    선생님이 아이 가방(NFC)을 태그.<br>
+                    → <em>"[철수]가 [1호차]에 탑승했습니다."</em> (부모 알림 발송)
+                </div>
+                <div class="logic-step">
+                    <strong>Step 3. 예외 처리 (Manual Fallback)</strong>
+                    NFC 분실 시? 앱에서 <strong>[수동 체크]</strong> 버튼 클릭.<br>
+                    → <em>"원아 누락 방지 & 데이터 통합 관리"</em>
+                </div>
+                
             </div>
+            
             <div class="card">
                 <div class="card-header">③ Parent (학부모)</div>
                 <ul>
                     <li><strong>폐쇄형 인증:</strong> 초대코드 + 관리자 승인 (외부인 원천 차단).</li>
-                    <li><strong>실시간 위치:</strong> 셔틀 도착 알림 (Push).</li>
+                    <li><strong>실시간 정보:</strong> "철수가 1호차에 탔어요" (차량번호 연동).</li>
                     <li><strong>Clean AD:</strong> 하단 배너에 육아/교육 정보 제공 (수익화).</li>
                 </ul>
             </div>
@@ -357,8 +368,8 @@
                 <h3 style="color: var(--primary);">파일럿 & MVP</h3>
                 <ul>
                     <li>공립 단설 5곳, 셔틀 10대 확보</li>
+                    <li><strong>수동/NFC 하이브리드 체크 기능 구현</strong></li>
                     <li>Driver App 개발 (GPS 정확도 95%)</li>
-                    <li><strong>NFC 태그 승하차 테스트</strong></li>
                     <li>음성인식(STT) 연동 성공률 90%</li>
                 </ul>
             </div>
@@ -388,7 +399,7 @@
 
 <footer>
     <div class="container" style="text-align: center; color: #666; font-size: 0.9rem; padding: 40px 0;">
-        <p><strong>EduProof OS Business Plan</strong> | 예비창업패키지 최종 제출용 v2.1</p>
+        <p><strong>EduProof OS Business Plan</strong> | 예비창업패키지 최종 제출용 v3.0</p>
         <p>© 2026 EduProof Team. All Rights Reserved.</p>
     </div>
 </footer>
@@ -396,7 +407,7 @@
 <button class="print-btn" onclick="window.print()">🖨️ PDF로 저장 / 인쇄</button>
 
 <script>
-    // 1. Cost Comparison Chart
+    // 1. Cost Comparison
     const costCtx = document.getElementById('costChart').getContext('2d');
     new Chart(costCtx, {
         type: 'bar',
@@ -412,40 +423,31 @@
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: { callbacks: { label: function(c) { return c.raw + ' 만원'; } } }
-            },
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return c.raw + ' 만원'; } } } },
             scales: { y: { beginAtZero: true, title: { display: true, text: '비용 (만원)' } } }
         }
     });
 
-    // 2. Time Saving Chart
+    // 2. Time Saving
     const timeCtx = document.getElementById('timeChart').getContext('2d');
     new Chart(timeCtx, {
         type: 'doughnut',
         data: {
             labels: ['행정/증빙 업무', '교육/보육 집중'],
             datasets: [{
-                data: [30, 70],
-                backgroundColor: ['#BDC3C7', '#ecf0f1'],
-                weight: 1
+                data: [30, 70], backgroundColor: ['#BDC3C7', '#ecf0f1'], weight: 1
             }, {
-                data: [10, 90],
-                backgroundColor: ['#E76F51', '#2ECC71'],
-                weight: 1.5
+                data: [10, 90], backgroundColor: ['#E76F51', '#2ECC71'], weight: 1.5
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                title: { display: true, text: '안쪽: 기존 / 바깥쪽: 도입 후 (업무 효율)' }
-            }
+            plugins: { title: { display: true, text: '안쪽: 기존 / 바깥쪽: 도입 후' } }
         }
     });
 
-    // 3. Safety Response Time Chart
+    // 3. Safety Response
     const safetyCtx = document.getElementById('safetyChart').getContext('2d');
     new Chart(safetyCtx, {
         type: 'line',
@@ -453,17 +455,10 @@
             labels: ['사고발생', '현장조치', '학부모연락', '보고서완료'],
             datasets: [{
                 label: '미도입 (평균 45분)',
-                data: [0, 10, 20, 45],
-                borderColor: '#BDC3C7',
-                borderDash: [5, 5],
-                tension: 0.4
+                data: [0, 10, 20, 45], borderColor: '#BDC3C7', borderDash: [5, 5], tension: 0.4
             }, {
                 label: 'EduProof AI (평균 6분)',
-                data: [0, 3, 5, 6],
-                borderColor: '#E76F51',
-                backgroundColor: 'rgba(231, 111, 81, 0.2)',
-                fill: true,
-                tension: 0.4
+                data: [0, 3, 5, 6], borderColor: '#E76F51', backgroundColor: 'rgba(231, 111, 81, 0.2)', fill: true, tension: 0.4
             }]
         },
         options: {
