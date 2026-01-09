@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduProof OS - 최종 사업계획서 (v3.0)</title>
+    <title>EduProof OS - 최종 사업계획서 (v4.0)</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -84,20 +84,22 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
             transition: transform 0.2s;
             height: 100%;
+            display: flex; flex-direction: column;
         }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
         .card-header { font-weight: 700; color: var(--primary); font-size: 1.1rem; margin-bottom: 15px; border-bottom: 2px solid var(--bg-light); padding-bottom: 10px; }
         
         .chart-container {
             position: relative; 
-            height: 300px; 
+            height: 250px; 
             width: 100%;
+            margin-top: auto;
         }
 
-        /* Logic Process Box (New Feature) */
+        /* Logic Step Box */
         .logic-step {
             background: #EBF5FB;
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 10px;
             border-radius: 6px;
             font-size: 0.9rem;
@@ -105,12 +107,13 @@
         }
         .logic-step strong { color: var(--primary); display: block; margin-bottom: 4px; }
 
-        /* Tables */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; }
-        th { background: var(--bg-light); color: var(--text-main); font-weight: 700; text-align: left; padding: 15px; border: 1px solid var(--border); }
-        td { padding: 15px; border: 1px solid var(--border); color: var(--text-sub); }
+        /* Detail Tables */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; font-size: 0.95rem; }
+        th { background: var(--bg-light); color: var(--text-main); font-weight: 700; text-align: left; padding: 12px; border: 1px solid var(--border); }
+        td { padding: 12px; border: 1px solid var(--border); color: var(--text-sub); }
         .highlight-row { background-color: #EBF5FB; }
         .profit-row td { background-color: #FEF9E7; color: var(--accent); font-weight: 800; font-size: 1.2rem; }
+        .sub-row td { font-size: 0.85rem; color: #888; padding-left: 20px; }
 
         /* Badge */
         .badge-new { background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; vertical-align: middle; margin-left: 5px; }
@@ -133,7 +136,7 @@
         @media (max-width: 768px) {
             .grid-2, .grid-3 { grid-template-columns: 1fr; }
             header h1 { font-size: 2.2rem; }
-            .chart-container { height: 250px; }
+            .chart-container { height: 200px; }
         }
     </style>
 </head>
@@ -142,11 +145,11 @@
 <header>
     <div class="container">
         <h1>EduProof OS</h1>
-        <div class="subtitle">AI & Mobile Data Platform</div>
-        <div class="tagline">Zero-Hardware • Hybrid Tagging • Voice Report</div>
+        <div class="subtitle">Smart Attendance & Safety Platform</div>
+        <div class="tagline">Zero-Hardware • Gate-to-Gate • Voice AI</div>
         <p style="margin-top: 20px; opacity: 0.9;">
-            "수치로 증명된 안전, 하드웨어 없는 혁신"<br>
-            유치원 행정·안전·통학 통합 증빙 운영체계
+            "등원에서 하원까지, 모든 순간이 증빙이 됩니다"<br>
+            유치원 행정·안전·통학 통합 운영체계
         </p>
     </div>
 </header>
@@ -158,27 +161,26 @@
             <div class="card">
                 <h3>🚫 Problem (문제)</h3>
                 <ul>
-                    <li><strong>비용 장벽:</strong> 단설 유치원은 차량 단말기(대당 50만원) 및 통신비 예산 부족으로 도입 포기.</li>
-                    <li><strong>업무 과중:</strong> 교사의 30% 업무시간이 행정/증빙 처리에 소모됨 <sup style="color:var(--primary)">[1]</sup>.</li>
-                    <li><strong>안전 공백:</strong> 사고 발생 시 경위서 작성이 늦어 '골든타임' 증빙 누락.</li>
+                    <li><strong>이중 출결 관리:</strong> 버스 승차 명단과 교실 출석부가 따로 관리되어 '누락 사고' 위험 상존.</li>
+                    <li><strong>행정 비효율:</strong> 등·하원 시간 수기 기록 → 나이스(NEIS) 입력 → 유아학비 청구의 복잡한 절차.</li>
+                    <li><strong>비용 장벽:</strong> 5학급 미만 소규모 단설 유치원은 고가 장비 도입 불가.</li>
                 </ul>
-                <span class="ref-text">[1] 출처: KEDI(한국교육개발원) 교원 업무 실태 조사</span>
             </div>
             <div class="card">
                 <h3>💡 Solution (해결)</h3>
                 <ul>
-                    <li><strong>Multi-Role Tagging:</strong> 기사 또는 동승 교사가 스마트폰으로 차량 및 원아 NFC 태깅.</li>
-                    <li><strong>Hybrid Check:</strong> NFC 태깅(자동) + 분실 시 앱 수동 체크(Manual Fallback) 동시 지원.</li>
-                    <li><strong>Voice AI:</strong> "철수가 넘어짐" 말하면 법정 서식 보고서 자동 생성.</li>
+                    <li><strong>All-Pass Tagging:</strong> 버스(통학) + 유치원 현관(도보) NFC 태깅으로 출결 데이터 100% 통합.</li>
+                    <li><strong>Smart Attendance:</strong> 태깅 즉시 '전자출석부' 생성 및 유아학비 산정 일수 자동 계산.</li>
+                    <li><strong>Teacher's Phone as Reader:</strong> 별도 리더기 없이 선생님 스마트폰을 태깅 리더기로 활용.</li>
                 </ul>
             </div>
         </div>
         <div class="card" style="margin-top: 30px;">
-            <h3>🎯 Target & Value</h3>
+            <h3>🎯 Target & Strategy</h3>
             <div class="grid-3">
                 <div>
-                    <strong>1차 타겟</strong><br>
-                    공립 단설 유치원<br>(행정인력 미배치 기관)
+                    <strong>초기 타겟 (MVP)</strong><br>
+                    공립 단설 유치원<br>(5학급, 버스 1대 운영 표준)
                 </div>
                 <div>
                     <strong>핵심 가치</strong><br>
@@ -186,7 +188,7 @@
                 </div>
                 <div>
                     <strong>확장 전략</strong><br>
-                    교육지원청 단위<br>통합 관제 도입 (B2G)
+                    교육지원청 통합 관제<br>사립/어린이집 시장 확대
                 </div>
             </div>
         </div>
@@ -196,34 +198,33 @@
 <div class="section">
     <div class="container">
         <h2>02. 기회비용 및 기대효과 (Data Analysis)</h2>
-        <p>도입 시 vs 미도입 시의 <strong>비용 절감, 업무 효율, 안전 골든타임</strong> 차이를 정량적으로 분석했습니다.</p>
+        <p><strong>[기준 모델]</strong> 5학급 / 버스 1대 운영 유치원 기준 분석</p>
         
         <div class="grid-2">
             <div class="card">
-                <h3>💰 1. 비용 절감 효과 (Cost Efficiency)</h3>
-                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">기존 하드웨어 방식 대비 <strong>초기 도입비 100% 절감</strong> 효과.</p>
+                <h3>💰 1. 비용 절감 효과</h3>
+                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">하드웨어/설치비/통신비 제거로 <strong>연 55% 비용 절감</strong>.</p>
                 <div class="chart-container"><canvas id="costChart"></canvas></div>
-                <span class="ref-text">* 기준: 버스 2대 운영 1년 총비용 (단말기/설치/통신 vs SaaS구독)</span>
+                <span class="ref-text">* 단말기(50만)+설치(10만)+통신비 vs SaaS구독</span>
             </div>
 
             <div class="card">
                 <h3>⏳ 2. 행정 업무 시간 단축</h3>
-                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">운행일지 및 평가 증빙 자동화로 <strong>일일 행정 업무 시간 70% 단축</strong>.</p>
+                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">출석부/일지/평가 증빙 자동화로 <strong>일 70% 시간 단축</strong>.</p>
                 <div class="chart-container"><canvas id="timeChart"></canvas></div>
-                <span class="ref-text">* 근거: 기존 수기 일지/사진 정리(60분) → 자동화(18분)</span>
+                <span class="ref-text">* 기존 수기 60분 → 자동화 18분</span>
             </div>
         </div>
 
         <div class="card" style="margin-top: 40px;">
-            <h3>🚑 3. 안전사고 대응 골든타임 (Safety Response)</h3>
+            <h3>🚑 3. 안전사고 골든타임 확보</h3>
             <div class="grid-2">
                 <div class="chart-container"><canvas id="safetyChart"></canvas></div>
                 <div style="padding-top: 10px;">
                     <ul style="font-size: 1.05rem;">
-                        <li style="margin-bottom: 15px;"><strong>미도입 시 (위험):</strong><br>사고 후 원 복귀 → PC 작성 (평균 45분). 기억 왜곡 및 민원 대응 실패 리스크.</li>
-                        <li style="margin-bottom: 15px;"><strong>EduProof 도입 (안전):</strong><br>현장에서 음성 녹음 → <strong>즉시 리포트 생성 (3분)</strong>. 학부모/병원에 정확한 데이터 공유.</li>
+                        <li style="margin-bottom: 15px;"><strong>기존 (위험):</strong><br>사고 발생 → 원 복귀 후 기억 의존 작성 (45분 소요).<br><span style="color:red; font-size:0.9rem;">* 골든타임 초과로 민원/소송 대응력 상실</span></li>
+                        <li style="margin-bottom: 15px;"><strong>EduProof (안전):</strong><br>현장 음성 녹음 → <strong>3분 내 리포트 자동 생성</strong>.<br><span style="color:var(--success); font-size:0.9rem;">* 정확한 타임라인 증빙 확보</span></li>
                     </ul>
-                    <span class="ref-text">* 참조: 학교안전공제회 사고 처리 매뉴얼 (골든타임 중요성)</span>
                 </div>
             </div>
         </div>
@@ -232,44 +233,40 @@
 
 <div class="section" style="background-color: var(--bg-light);">
     <div class="container">
-        <h2>03. 3대 핵심 솔루션 (기능 및 알고리즘)</h2>
+        <h2>03. 3대 핵심 솔루션 (기능 고도화)</h2>
         <div class="grid-3">
             <div class="card">
-                <div class="card-header">① Core (행정/안전)</div>
-                <ul>
-                    <li><strong>평가 증빙 자동화:</strong> 지표별 사진/서류 자동 분류 및 누락 알림.</li>
-                    <li><strong>AI Safety Pack:</strong> 사고 현장 녹음(STT) → 법정 서식 자동 변환.</li>
-                    <li><strong>타임라인 리포트:</strong> 발견-조치-연락 전 과정 증빙 출력.</li>
+                <div class="card-header">① Core (행정/안전) <span class="badge-new">UP</span></div>
+                <ul style="font-size:0.95rem;">
+                    <li><strong>전자출석부 자동화:</strong> NFC 태깅 데이터가 '전자출석부' 서식에 자동 매핑 (유아학비 청구 근거 자료).</li>
+                    <li><strong>AI Safety Pack:</strong> 사고 경위 음성(STT) 기록 및 법정 보고서 변환.</li>
+                    <li><strong>평가 증빙 OS:</strong> 교육청 평가지표별 사진 자동 분류.</li>
                 </ul>
             </div>
             
             <div class="card" style="border: 2px solid var(--secondary);">
-                <div class="card-header" style="color:var(--secondary)">② Transit (스마트 승하차) <span class="badge-new">NEW</span></div>
+                <div class="card-header" style="color:var(--secondary)">② Smart Attendance <span class="badge-new">NEW</span></div>
                 
                 <div class="logic-step">
-                    <strong>Step 1. 차량 페어링 (Responsible Tagging)</strong>
-                    운전자 또는 동승 교사가 폰으로 <strong>차량 내 부착된 NFC</strong>를 태그.<br>
-                    → <em>"지금부터 [1호차] 등원 운행을 [김선생님]이 담당합니다."</em> (부모 앱에 '1호차' 표시)
+                    <strong>1. 등하원 통합 관리 (Gate Tagging)</strong>
+                    버스 승하차뿐만 아니라, <strong>유치원 현관</strong>에서 선생님 폰(Kiosk모드)에 가방 태그 시 '등원 완료' 처리.
                 </div>
                 <div class="logic-step">
-                    <strong>Step 2. 원아 탑승 (Child Tagging)</strong>
-                    선생님이 아이 가방(NFC)을 태그.<br>
-                    → <em>"[철수]가 [1호차]에 탑승했습니다."</em> (부모 알림 발송)
+                    <strong>2. 원아 누락 방지 (Cross Check)</strong>
+                    "버스 하차 10명 vs 교실 입실 9명" → <strong>즉시 알림 발생</strong> (미입실 아동 추적).
                 </div>
                 <div class="logic-step">
-                    <strong>Step 3. 예외 처리 (Manual Fallback)</strong>
-                    NFC 분실 시? 앱에서 <strong>[수동 체크]</strong> 버튼 클릭.<br>
-                    → <em>"원아 누락 방지 & 데이터 통합 관리"</em>
+                    <strong>3. 예외 처리 (Manual Fallback)</strong>
+                    NFC 미지참 시 앱에서 <strong>[수동 출석]</strong> 처리 (데이터 통합).
                 </div>
-                
             </div>
             
             <div class="card">
-                <div class="card-header">③ Parent (학부모)</div>
-                <ul>
-                    <li><strong>폐쇄형 인증:</strong> 초대코드 + 관리자 승인 (외부인 원천 차단).</li>
-                    <li><strong>실시간 정보:</strong> "철수가 1호차에 탔어요" (차량번호 연동).</li>
-                    <li><strong>Clean AD:</strong> 하단 배너에 육아/교육 정보 제공 (수익화).</li>
+                <div class="card-header">③ Parent (학부모) <span class="badge-new">UP</span></div>
+                <ul style="font-size:0.95rem;">
+                    <li><strong>실시간 안심 알림:</strong> "1호차 탑승" / "유치원 정문 통과" 구분 알림.</li>
+                    <li><strong>민원 업무 디지털화:</strong> 투약 의뢰서, 결석계, 귀가 동의서 앱 제출 (종이 서류 제거).</li>
+                    <li><strong>Clean AD:</strong> 지역 학원/병원 정보 제공 (수익화).</li>
                 </ul>
             </div>
         </div>
@@ -278,83 +275,130 @@
 
 <div class="section">
     <div class="container">
-        <h2>04. 수익 모델 및 재무 계획</h2>
-        <p style="margin-bottom:20px;">하드웨어 원가를 제거하여 이익률을 높이고, 광고 수익으로 확장성을 확보했습니다.</p>
+        <h2>04. 수익 모델 및 재무 계획 (상세)</h2>
+        <p style="margin-bottom:20px;"><strong>[1차년도 목표]</strong> 유치원 100개소 (기관당 5학급 / 버스 1대 운영 가정) 확보 시나리오</p>
         
         <div class="grid-2">
             <div class="card">
-                <h3>💰 가격 정책 (B2G SaaS)</h3>
+                <h3>💰 가격 정책 (단위: 1개소/연간)</h3>
                 <table>
-                    <tr>
-                        <th>구분</th>
-                        <th>가격 (연간)</th>
-                        <th>비고</th>
-                    </tr>
-                    <tr>
-                        <td><strong>기관 구독</strong></td>
-                        <td>240만 원</td>
-                        <td>행정/평가/안전 증빙</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td><strong>차량 관제</strong></td>
-                        <td>대당 72만 원</td>
-                        <td><strong>설치비 0원 / 무제한 AS</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>초기 도입</strong></td>
-                        <td>100만 원 (1회)</td>
-                        <td>세팅/교육/데이터이관</td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>항목</th>
+                            <th>금액 (VAT별도)</th>
+                            <th>내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>기관 구독 (SaaS)</strong></td>
+                            <td>240만 원</td>
+                            <td>행정/평가/안전/전자출석부</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>버스/출결 관제</strong></td>
+                            <td>72만 원</td>
+                            <td>버스 1대 + 현관 태깅 (무제한)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>초기 세팅비</strong></td>
+                            <td>100만 원</td>
+                            <td>DB이관/태그제공/교육 (1회)</td>
+                        </tr>
+                        <tr class="sub-row">
+                            <td colspan="3">* 하드웨어 설치비/약정 위약금 없음</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
-            
+
             <div class="card">
-                <h3>📈 예상 수익 (1년차, 100개소 기준)</h3>
-                <table>
-                    <tr>
-                        <td>기관 구독료 (100곳)</td>
-                        <td style="text-align: right;">2.4억 원</td>
-                    </tr>
-                    <tr>
-                        <td>차량 관제료 (200대)</td>
-                        <td style="text-align: right;">1.44억 원</td>
-                    </tr>
-                    <tr>
-                        <td>도입비 (신규)</td>
-                        <td style="text-align: right;">1.0억 원</td>
-                    </tr>
-                    <tr>
-                        <td><strong>광고 수익 (B2C)</strong></td>
-                        <td style="text-align: right;"><strong>0.36억 원</strong></td>
-                    </tr>
-                    <tr class="profit-row">
-                        <td>총 매출 합계</td>
-                        <td style="text-align: right;">5.2억 원</td>
-                    </tr>
-                </table>
+                <h3>📊 매출 구성 (Revenue Mix)</h3>
+                <div class="chart-container" style="height: 250px;">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+                <p style="text-align:center; font-size:0.9rem; margin-top:10px; color:#666;">* 구독 및 부가서비스 수익 비중 85% 이상 (안정적)</p>
             </div>
         </div>
 
         <div class="card" style="margin-top: 30px;">
-            <h3>📊 순수익 분석 (Unit Economics)</h3>
-            <div class="grid-2">
-                <div>
-                    <h4 style="color: var(--text-sub);">연간 총 비용 (Cost)</h4>
-                    <p style="font-size: 2rem; font-weight: bold; margin: 10px 0;">3.5억 원</p>
-                    <ul style="font-size: 0.9rem;">
-                        <li>인건비(4인): 2.5억</li>
-                        <li>서버/API: 0.4억</li>
-                        <li>마케팅/운영: 0.6억</li>
-                        <li><strong>하드웨어 제조원가: 0원</strong></li>
-                    </ul>
-                </div>
-                <div style="background-color: #FEF9E7; padding: 20px; border-radius: 8px; border: 1px solid #F7DC6F;">
-                    <h4 style="color: var(--accent);">예상 영업 이익 (Profit)</h4>
-                    <p style="font-size: 2.5rem; font-weight: 800; color: var(--accent); margin: 10px 0;">1.7억 원</p>
-                    <p><strong>영업이익률: 약 32%</strong></p>
-                    <p style="font-size: 0.9rem;">* S/W 중심의 고마진 구조 달성</p>
-                </div>
-            </div>
+            <h3>📉 1차년도 추정 손익계산서 (100개소 기준)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="20%">구분</th>
+                        <th width="40%">상세 내역 (산출 근거)</th>
+                        <th width="20%">금액</th>
+                        <th width="20%">비중</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="4"><strong>매출<br>(Revenue)</strong></td>
+                        <td>① 기관 구독료 (100곳 × 240만)</td>
+                        <td>2.4억 원</td>
+                        <td>53%</td>
+                    </tr>
+                    <tr>
+                        <td>② 버스/출결 관제 (100대 × 72만)</td>
+                        <td>0.72억 원</td>
+                        <td>16%</td>
+                    </tr>
+                    <tr>
+                        <td>③ 초기 세팅비 (100곳 × 100만)</td>
+                        <td>1.0억 원</td>
+                        <td>22%</td>
+                    </tr>
+                    <tr>
+                        <td>④ 광고 수익 (1만명 × 300원 × 12개월)</td>
+                        <td>0.36억 원</td>
+                        <td>9%</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td colspan="2" style="text-align:right;"><strong>매출 합계</strong></td>
+                        <td><strong>4.48억 원</strong></td>
+                        <td>100%</td>
+                    </tr>
+                    
+                    <tr>
+                        <td rowspan="5"><strong>비용<br>(Expense)</strong></td>
+                        <td>인건비 (대표 + 개발2 + 영업1)</td>
+                        <td>2.0억 원</td>
+                        <td>초기 팀</td>
+                    </tr>
+                    <tr>
+                        <td>서버/API (STT, 지도, 클라우드)</td>
+                        <td>0.3억 원</td>
+                        <td>트래픽 비례</td>
+                    </tr>
+                    <tr>
+                        <td>NFC 태그 원가 (아동 5,000명분)</td>
+                        <td>0.1억 원</td>
+                        <td>개당 2000원</td>
+                    </tr>
+                    <tr>
+                        <td>마케팅/영업비 (박람회, 출장)</td>
+                        <td>0.4억 원</td>
+                        <td>B2G 영업</td>
+                    </tr>
+                    <tr>
+                        <td>일반관리비 (임대료, 세무 등)</td>
+                        <td>0.3억 원</td>
+                        <td></td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td colspan="2" style="text-align:right;"><strong>비용 합계</strong></td>
+                        <td><strong>3.1억 원</strong></td>
+                        <td></td>
+                    </tr>
+
+                    <tr class="profit-row">
+                        <td colspan="2" style="text-align:right;"><strong>영업 이익 (Operating Profit)</strong></td>
+                        <td><strong>1.38억 원</strong></td>
+                        <td><strong>이익률 31%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -367,20 +411,20 @@
                 <div class="card-header" style="color: var(--text-sub);">Phase 1. 검증 (1~4개월)</div>
                 <h3 style="color: var(--primary);">파일럿 & MVP</h3>
                 <ul>
-                    <li>공립 단설 5곳, 셔틀 10대 확보</li>
-                    <li><strong>수동/NFC 하이브리드 체크 기능 구현</strong></li>
-                    <li>Driver App 개발 (GPS 정확도 95%)</li>
-                    <li>음성인식(STT) 연동 성공률 90%</li>
+                    <li>공립 단설 5곳 (5학급 규모) 섭외</li>
+                    <li><strong>[정문] 등하원 태깅 테스트</strong></li>
+                    <li>전자출석부 연동 정합성 검증</li>
+                    <li>Driver App 안전성 확보</li>
                 </ul>
             </div>
             <div class="card" style="border: 2px solid var(--primary);">
                 <div class="card-header" style="color: var(--primary);">Phase 2. 진입 (5~8개월)</div>
                 <h3 style="color: var(--primary);">초기 시장 확산</h3>
                 <ul>
-                    <li>유료 전환 20곳, 교육지원청 협약</li>
-                    <li><strong>"장비값 0원" 캠페인 마케팅</strong></li>
-                    <li>학부모 앱 출시 & 광고 모듈 탑재</li>
-                    <li>폐쇄형 인증 시스템 가동</li>
+                    <li>유료 전환 20곳 달성</li>
+                    <li><strong>"장비값 0원" 캠페인</strong> (입학 시즌)</li>
+                    <li>학부모 앱 출시 (투약의뢰서 기능 포함)</li>
+                    <li>교육지원청 시범사업 제안</li>
                 </ul>
             </div>
             <div class="card">
@@ -388,9 +432,9 @@
                 <h3 style="color: var(--primary);">Scale-Up</h3>
                 <ul>
                     <li>100개소 달성 (BEP 돌파)</li>
-                    <li>조달청(벤처나라) 제품 등록</li>
-                    <li>AI 안전 리포트 고도화 (교육청용)</li>
-                    <li>지역 광고주 직접 영업 시작</li>
+                    <li>조달청(벤처나라) 등록</li>
+                    <li>지역 광고 플랫폼(학원/병원) 활성화</li>
+                    <li>사립 유치원 프랜차이즈 영업</li>
                 </ul>
             </div>
         </div>
@@ -399,7 +443,7 @@
 
 <footer>
     <div class="container" style="text-align: center; color: #666; font-size: 0.9rem; padding: 40px 0;">
-        <p><strong>EduProof OS Business Plan</strong> | 예비창업패키지 최종 제출용 v3.0</p>
+        <p><strong>EduProof OS Business Plan</strong> | 예비창업패키지 최종 제출용 v4.0</p>
         <p>© 2026 EduProof Team. All Rights Reserved.</p>
     </div>
 </footer>
@@ -407,7 +451,7 @@
 <button class="print-btn" onclick="window.print()">🖨️ PDF로 저장 / 인쇄</button>
 
 <script>
-    // 1. Cost Comparison
+    // 1. Cost Comparison (Updated for 1 Bus model)
     const costCtx = document.getElementById('costChart').getContext('2d');
     new Chart(costCtx, {
         type: 'bar',
@@ -415,7 +459,7 @@
             labels: ['기존 하드웨어 방식', 'EduProof OS (제안)'],
             datasets: [{
                 label: '연간 총 비용 (만원)',
-                data: [350, 144], 
+                data: [180, 72], // 1대 기준: (단말기50+설치10+통신20+유지보수) vs (72)
                 backgroundColor: ['#BDC3C7', '#1A5C8E'],
                 borderRadius: 5
             }]
@@ -433,7 +477,7 @@
     new Chart(timeCtx, {
         type: 'doughnut',
         data: {
-            labels: ['행정/증빙 업무', '교육/보육 집중'],
+            labels: ['행정/증빙/입력', '교육/보육 집중'],
             datasets: [{
                 data: [30, 70], backgroundColor: ['#BDC3C7', '#ecf0f1'], weight: 1
             }, {
@@ -457,14 +501,36 @@
                 label: '미도입 (평균 45분)',
                 data: [0, 10, 20, 45], borderColor: '#BDC3C7', borderDash: [5, 5], tension: 0.4
             }, {
-                label: 'EduProof AI (평균 6분)',
-                data: [0, 3, 5, 6], borderColor: '#E76F51', backgroundColor: 'rgba(231, 111, 81, 0.2)', fill: true, tension: 0.4
+                label: 'EduProof AI (평균 3분)',
+                data: [0, 1, 2, 3], borderColor: '#E76F51', backgroundColor: 'rgba(231, 111, 81, 0.2)', fill: true, tension: 0.4
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: { y: { title: { display: true, text: '소요 시간 (분)' } } }
+        }
+    });
+
+    // 4. Revenue Mix (New Chart)
+    const revCtx = document.getElementById('revenueChart').getContext('2d');
+    new Chart(revCtx, {
+        type: 'pie',
+        data: {
+            labels: ['기관 구독(SaaS)', '관제 옵션', '초기 세팅비', '광고 수익'],
+            datasets: [{
+                data: [53, 16, 22, 9],
+                backgroundColor: ['#1A5C8E', '#2980b9', '#3498db', '#F4A261'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right' },
+                title: { display: false, text: '매출 구성비' }
+            }
         }
     });
 </script>
