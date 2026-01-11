@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholix - Business Plan (Final v6.0)</title>
+    <title>Scholix - AI School Logic System (Final v7.0)</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             /* Brand Identity */
             --primary: #153E7E;    /* Navy: 신뢰, 전문성 */
-            --secondary: #00B4D8;  /* Blue: 혁신, AI */
-            --accent: #FF4757;     /* Red: 안전/경고 */
-            --success: #2ED573;    /* Green: 해결/수익 */
+            --secondary: #00B4D8;  /* Blue: 혁신, AI, 연결 */
+            --accent: #E74C3C;     /* Red: 위험 감지, 골든타임 */
+            --success: #27AE60;    /* Green: 안전, 수익 */
             --bg-light: #F8FAFC;
-            --text-main: #2F3542;
-            --text-sub: #57606F;
-            --border: #DFE4EA;
+            --text-main: #2C3E50;
+            --text-sub: #546E7A;
+            --border: #DFE6E9;
         }
 
         * { box-sizing: border-box; }
@@ -26,7 +26,7 @@
             -webkit-print-color-adjust: exact;
         }
 
-        /* Layout */
+        /* Layout Utility */
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         .section { padding: 70px 0; border-bottom: 1px solid var(--border); }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
@@ -39,14 +39,14 @@
         }
         header h1 { font-size: 3.5rem; margin: 0; font-weight: 800; letter-spacing: -1px; }
         header .brand-x { color: var(--secondary); }
-        header .subtitle { font-size: 1.4rem; opacity: 0.9; margin-top: 15px; font-weight: 500; }
+        header .subtitle { font-size: 1.4rem; opacity: 0.95; margin-top: 15px; font-weight: 500; }
         header .tagline {
             display: inline-block; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
             border: 1px solid rgba(255,255,255,0.2); color: var(--secondary);
             padding: 8px 24px; border-radius: 50px; font-weight: 700; margin-top: 25px;
         }
 
-        /* Titles & Cards */
+        /* Typography & Components */
         h2 { font-size: 2.2rem; color: #0F172A; margin-bottom: 40px; font-weight: 800; display: flex; align-items: center; }
         h2 span { font-size: 1.1rem; color: var(--text-sub); font-weight: 500; margin-left: 15px; }
         h3 { font-size: 1.3rem; margin-bottom: 15px; color: var(--primary); font-weight: 700; }
@@ -56,27 +56,39 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column;
         }
         .card-header { font-weight: 800; color: var(--text-main); font-size: 1.1rem; margin-bottom: 15px; border-bottom: 2px solid var(--bg-light); padding-bottom: 10px; display: flex; justify-content: space-between; }
-
-        /* [Visual] How It Works */
-        .flow-container { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; background: #F1F5F9; padding: 20px; border-radius: 12px; }
-        .flow-step { text-align: center; position: relative; width: 18%; }
+        
+        /* [NEW] Flowchart Styles (무설치 추적 로직) */
+        .flow-container { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; background: #F1F5F9; padding: 20px; border-radius: 12px; position: relative; }
+        .flow-step { text-align: center; position: relative; width: 22%; z-index: 2; }
         .flow-step .icon { font-size: 2rem; margin-bottom: 10px; display: block; }
         .flow-step .label { font-size: 0.85rem; font-weight: 700; color: var(--primary); }
         .flow-arrow { font-size: 1.5rem; color: #CBD5E1; font-weight: bold; }
-        
+        .flow-alert-box {
+            position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
+            background: white; border: 1px solid var(--accent); color: var(--accent);
+            padding: 10px 20px; border-radius: 50px; font-size: 0.85rem; font-weight: bold;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2); z-index: 3;
+        }
+        .flow-connector {
+            position: absolute; bottom: 20px; left: 25%; width: 50%; height: 40px;
+            border-bottom: 2px dashed var(--accent); border-left: 2px dashed var(--accent); border-right: 2px dashed var(--accent);
+            border-radius: 0 0 20px 20px; z-index: 1;
+        }
+
         .ai-box { display: flex; gap: 20px; margin-top: 10px; }
         .ai-input, .ai-output { flex: 1; padding: 15px; border-radius: 8px; font-size: 0.9rem; }
         .ai-input { background: #F8F9FA; border: 1px dashed #A4B0BE; color: #747D8C; }
         .ai-output { background: #E1F5FE; border: 1px solid #81D4FA; color: #0277BD; }
 
-        /* Financial Tables */
+        /* Tables & Charts */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; font-size: 0.85rem; }
         th { background: #E2E8F0; padding: 10px; text-align: center; border: 1px solid #CBD5E1; font-weight: 700; }
         td { padding: 10px; border: 1px solid #E2E8F0; text-align: center; }
         td.left { text-align: left; padding-left: 15px; }
         td.right { text-align: right; padding-right: 15px; }
-        .bg-head { background: #F1F5F9; font-weight: bold; }
-        .total-row td { background: #FFF3E0; color: #E67E22; font-weight: 800; }
+        .total-row td { background: #FFF3E0; color: #D35400; font-weight: 800; }
+        .chart-container { position: relative; height: 220px; width: 100%; margin-top: auto; }
+        .ref-text { display: block; font-size: 0.75rem; color: #95A5A6; margin-top: 8px; font-style: italic; text-align: right; }
 
         /* Badges */
         .badge { font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; background: #E2E8F0; color: #64748B; font-weight: 700; }
@@ -91,7 +103,7 @@
         }
 
         @media print { .print-btn { display: none; } .section { page-break-inside: avoid; } }
-        @media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } .flow-container, .ai-box { flex-direction: column; gap: 15px; } }
+        @media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } .flow-container, .ai-box { flex-direction: column; gap: 15px; } .flow-step { width: 100%; } .flow-alert-box { position: static; transform: none; margin-top: 15px; } .flow-connector { display: none; } }
     </style>
 </head>
 <body>
@@ -100,42 +112,51 @@
     <div class="container">
         <h1>Scholi<span class="brand-x">x</span></h1>
         <div class="subtitle">AI School Logic & Operation System</div>
-        <div class="tagline">Zero-Hardware • Gate-to-Gate • Voice AI</div>
+        <div class="tagline">Zero-Hardware • Triple-Check Safety • Voice AI</div>
         <p style="margin-top: 25px; opacity: 0.9;">
-            "선생님의 복잡한 행정을 AI 로직으로, 아이들의 안전을 빈틈없이."<br>
-            유치원부터 초등학교 돌봄까지, 학교 운영의 새로운 표준
+            "선생님의 행정 업무는 AI로, 원아의 이동 경로는 빈틈없이."<br>
+            유치원부터 초등학교 돌봄까지, 학교 운영의 새로운 표준 (OS)
         </p>
     </div>
 </header>
 
 <div class="section" style="background: var(--bg-light);">
     <div class="container">
-        <h2>01. Project Canvas <span>문제 정의 및 솔루션</span></h2>
+        <h2>01. Project Canvas <span>문제 정의 및 핵심 솔루션</span></h2>
         <div class="grid-2">
             <div class="card">
                 <h3>🚫 Pain Points (문제)</h3>
                 <ul style="padding-left: 20px; color: var(--text-sub);">
-                    <li style="margin-bottom:10px;"><strong>안전 사각지대:</strong> 하차벨(버스)과 교실 출석부(NEIS)가 연동되지 않아 '중간 이탈' 위험 존재.</li>
-                    <li style="margin-bottom:10px;"><strong>행정 업무 과중:</strong> 교사 업무 40%가 단순 입력(투약, 일지, 품의).</li>
-                    <li style="margin-bottom:10px;"><strong>비용 장벽:</strong> 5학급 미만 소규모 유치원은 고가 장비(비콘/리더기) 설치 불가.</li>
+                    <li style="margin-bottom:10px;">
+                        <strong>인계 공백 (Hand-over Gap):</strong> 교실에서 나왔으나(하원), 버스에 타지 않은(미탑승) '이동 구간' 사각지대 존재.<br>
+                        [span_0](start_span)<span class="ref-text">[Ref-1] 2024 유치원 안전사고 9,802건 중 '통학/이동' 사고 상존[span_0](end_span)</span>
+                    </li>
+                    <li style="margin-bottom:10px;">
+                        <strong>행정 업무 과중:</strong> 교사 업무 40%가 단순 기록/입력(투약, 귀가동의, 안전일지).<br>
+                        [span_1](start_span)<span class="ref-text">[Ref-4] OECD TALIS 2024: 한국 교사 주당 행정업무 6시간[span_1](end_span)</span>
+                    </li>
+                    <li style="margin-bottom:10px;">
+                        <strong>도입 비용 장벽:</strong> 5학급 미만 소규모 유치원은 고가 장비(비콘/리더기/DTG) 설치 불가.<br>
+                        [span_2](start_span)<span class="ref-text">[Ref-5] DTG+LTE 비용: 초기 40만 + 월 1.6만/대[span_2](end_span)</span>
+                    </li>
                 </ul>
             </div>
             <div class="card" style="border-color: var(--secondary);">
                 <h3>💡 Scholix Solution (해결)</h3>
                 <ul style="padding-left: 20px;">
                     <li style="margin-bottom:10px;"><strong>AI Admin Core:</strong> 음성 한 줄로 [안전일지+투약의뢰+보고서] 자동 생성.</li>
-                    <li style="margin-bottom:10px;"><strong>Dual Gate Logic:</strong> 버스(이동) + 교문(도보) 태깅 데이터를 크로스 체크.</li>
-                    <li style="margin-bottom:10px;"><strong>Zero-Hardware:</strong> 교사/기사 스마트폰 = 리더기. (도입비 0원).</li>
+                    <li style="margin-bottom:10px;"><strong>Triple-Check Logic:</strong> [교실하원 → 버스탑승 → 버스하차] 3단계 추적으로 누락 원천 봉쇄.</li>
+                    <li style="margin-bottom:10px;"><strong>Zero-Hardware:</strong> 교사/기사 스마트폰 = NFC 리더기. (도입비 0원).</li>
                 </ul>
             </div>
         </div>
 
         <div class="card" style="margin-top: 30px;">
-            <div class="card-header">🎯 Target & Strategy (시장 전략)</div>
+            <div class="card-header">🎯 Target & Strategy (타겟 및 확장 전략)</div>
             <div class="grid-3">
                 <div style="text-align: center; border-right: 1px solid #eee;">
                     <strong style="color: var(--primary); display: block;">1차 타겟 (MVP)</strong>
-                    <span style="font-size: 0.9rem; color: #666;">공립 단설 유치원<br>(5~10학급 규모)</span>
+                    [span_3](start_span)<span style="font-size: 0.9rem; color: #666;">공립 단설/병설 유치원<br>(평균 6-10학급, 버스 1-3대)[span_3](end_span)</span>
                 </div>
                 <div style="text-align: center; border-right: 1px solid #eee;">
                     <strong style="color: var(--secondary); display: block;">핵심 가치</strong>
@@ -143,7 +164,7 @@
                 </div>
                 <div style="text-align: center;">
                     <strong style="color: var(--text-main); display: block;">확장 전략</strong>
-                    <span style="font-size: 0.9rem; color: #666;">교육지원청 통합 계약<br>→ 초등 돌봄/늘봄학교</span>
+                    [span_4](start_span)<span style="font-size: 0.9rem; color: #666;">교육지원청 통합 계약<br>→ 초등 늘봄/돌봄학교[span_4](end_span)</span>
                 </div>
             </div>
         </div>
@@ -152,30 +173,68 @@
 
 <div class="section">
     <div class="container">
-        <h2>02. 3 Core Solutions <span>핵심 기능 및 예외 처리</span></h2>
+        <h2>02. Data Analysis <span>기회비용 및 기대효과 (근거 기반)</span></h2>
+        <p style="margin-bottom:20px; color:#666; font-size:0.9rem;">
+            [span_5](start_span)[span_6](start_span)<strong>[Reference]</strong> 학교안전공제중앙회(SSIF) 2024 통계 및 교육부 유치원 현황 기반 분석[span_5](end_span)[span_6](end_span)
+        </p>
+
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-header">💰 3년 총소유비용 (TCO) 비교</div>
+                <p style="font-size:0.85rem; text-align:center; color:#666; margin-bottom:10px;">
+                    버스 2대 기준, 하드웨어 제거로 <strong>약 40% 절감</strong>
+                </p>
+                <div class="chart-container"><canvas id="tcoChart"></canvas></div>
+                [span_7](start_span)<div class="ref-text">* 근거: DTG/통신비(Ref-5) vs Scholix 구독[span_7](end_span)</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">🚨 유치원 안전사고 규모 (Risk)</div>
+                <p style="font-size:0.85rem; text-align:center; color:#666; margin-bottom:10px;">
+                    연간 <strong>9,802건</strong> 발생 (상시 리스크)
+                </p>
+                <div class="chart-container"><canvas id="accidentChart"></canvas></div>
+                [span_8](start_span)[span_9](start_span)<div class="ref-text">* 출처: SSIF 2024 통계[span_8](end_span)[span_9](end_span)</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">📊 연간 도입 가치 (Value)</div>
+                <p style="font-size:0.85rem; text-align:center; color:#666; margin-bottom:10px;">
+                    행정시간 절감 + 리스크 방지 = <strong>연 3억+ 효과 (추정)</strong>
+                </p>
+                <div class="chart-container"><canvas id="valueChart"></canvas></div>
+                [span_10](start_span)<div class="ref-text">* 모델 가정: 1기관 기준 (보수적)[span_10](end_span)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section" style="background: var(--bg-light);">
+    <div class="container">
+        <h2>03. 3 Core Solutions <span>핵심 기능 상세</span></h2>
         <div class="grid-3">
             <div class="card">
                 <div class="card-header">① AI Admin (행정) <span class="badge core">Core</span></div>
                 <ul style="font-size: 0.9rem; padding-left: 20px;">
-                    <li><strong>전자출석부:</strong> 태깅 데이터 → 법정 서식 자동 매핑.</li>
-                    <li><strong>AI Safety Report:</strong> 사고 발생 시 음성(STT) → 경위서/보고서 변환.</li>
-                    <li><strong>평가 증빙:</strong> 평가지표별 사진/문서 자동 분류.</li>
+                    [span_11](start_span)<li style="margin-bottom: 8px;"><strong>전자출석부:</strong> 태깅 데이터 → 법정 서식(NEIS 연동형) 자동 매핑.[span_11](end_span)</li>
+                    [span_12](start_span)<li style="margin-bottom: 8px;"><strong>AI Safety Pack:</strong> 사고 발생 시 음성(STT) → 육하원칙 경위서/보고서 변환.[span_12](end_span)</li>
+                    [span_13](start_span)<li><strong>평가 증빙 OS:</strong> 평가지표별 사진/문서 자동 분류 및 저장.[span_13](end_span)</li>
                 </ul>
             </div>
             <div class="card" style="border: 2px solid var(--secondary);">
-                <div class="card-header" style="color:var(--secondary);">② Dual Gate (안전) <span class="badge new">Patent</span></div>
+                <div class="card-header" style="color:var(--secondary);">② Triple Check (안전) <span class="badge new">Logic</span></div>
                 <ul style="font-size: 0.9rem; padding-left: 20px;">
-                    <li><strong>Gate-to-Gate:</strong> 버스 승하차 + 현관 통합 관제.</li>
-                    <li><strong>Cross Check:</strong> "하차O / 입실X" 시 즉시 경보.</li>
-                    <li style="background:#FFF3E0;"><strong>Manual Fallback:</strong> 태그 미지참 시 앱 내 [수동 출석] 버튼으로 예외 처리.</li>
+                    [span_14](start_span)<li style="margin-bottom: 8px;"><strong>Triple-Check:</strong> [교실(하원) → 버스(탑승) → 집(하차)] 3단계 추적.[span_14](end_span)</li>
+                    [span_15](start_span)<li style="margin-bottom: 8px;"><strong>Cross Check:</strong> "게이트 아웃 OK, 탑승 미확인" 시 <strong>즉시 경보</strong>.[span_15](end_span)</li>
+                    [span_16](start_span)<li style="background:#FFF3E0; padding:3px;"><strong>Manual Fallback:</strong> 태그 분실 시 교사/기사 앱에서 <strong>[수동 체크]</strong> (예외처리).[span_16](end_span)</li>
                 </ul>
             </div>
             <div class="card">
                 <div class="card-header">③ Parent Link (앱) <span class="badge">App</span></div>
                 <ul style="font-size: 0.9rem; padding-left: 20px;">
-                    <li><strong>안심 알림:</strong> 위치 기반(정문/버스) 정확한 알림.</li>
-                    <li><strong>민원 디지털화:</strong> 투약의뢰서, 결석계, 귀가동의서 앱 제출.</li>
-                    <li><strong>Clean AD:</strong> 지역 기반 교육정보(수익 모델).</li>
+                    [span_17](start_span)<li style="margin-bottom: 8px;"><strong>안심 알림:</strong> "탑승/하차" 푸시 알림 + 폐쇄형 인증(초대코드).[span_17](end_span)</li>
+                    <li style="margin-bottom: 8px;"><strong>민원 디지털화:</strong> 투약의뢰서, 결석계, 귀가동의서 앱 제출 (종이 서류 0).</li>
+                    [span_18](start_span)<li><strong>Clean AD:</strong> 지역 기반 교육정보(수익 모델).[span_18](end_span)</li>
                 </ul>
             </div>
         </div>
@@ -184,44 +243,55 @@
 
 <div class="section" style="background: #F0F4F8;">
     <div class="container">
-        <h2>03. How It Works <span>(핵심 작동 원리)</span></h2>
+        <h2>04. How It Works <span>(핵심 작동 원리 시각화)</span></h2>
         
-        <div class="card" style="margin-bottom: 20px;">
-            <h3>📍 Safety Logic Flow (안전망 시각화)</h3>
+        <div class="card" style="margin-bottom: 30px;">
+            [span_19](start_span)<h3>📍 Triple-Check Tracking Flow (무설치/누락방지 로직)[span_19](end_span)</h3>
+            <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">
+                별도 리더기 없이 <strong>스마트폰 + 스티커</strong>만으로 교실에서 하차까지 끊김 없이 추적합니다.
+            </p>
+            
             <div class="flow-container">
                 <div class="flow-step">
-                    <span class="icon">🚌</span>
-                    <div class="label">Step 1.<br>버스 승하차 태그</div>
-                </div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step">
                     <span class="icon">🏫</span>
-                    <div class="label">Step 2.<br>교문/현관 태그</div>
+                    <div class="label">Step 1. 하원 (Gate-Out)<br><span style="font-weight:400; font-size:0.8rem;">(담임: 1탭/스캔)</span></div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-step">
-                    <span class="icon">🧠</span>
-                    <div class="label" style="color:var(--secondary);">AI Cross Check<br>(알고리즘 판독)</div>
+                    <span class="icon">🚌</span>
+                    <div class="label">Step 2. 탑승 (Boarding)<br><span style="font-weight:400; font-size:0.8rem;">(기사: 1탭/스캔)</span></div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="icon">🏠</span>
+                    <div class="label">Step 3. 하차 (Drop-off)<br><span style="font-weight:400; font-size:0.8rem;">(기사: 1탭/스캔)</span></div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-step">
                     <span class="icon">✅</span>
-                    <div class="label" style="color:var(--success);">정상 등원<br>(자동 출석처리)</div>
+                    <div class="label" style="color:var(--success);">안전 귀가 완료<br><span style="font-weight:400; font-size:0.8rem;">(부모 알림 발송)</span></div>
+                </div>
+                
+                <div class="flow-connector"></div>
+                <div class="flow-alert-box">
+                    🧠 <strong>Auto-Reconciliation:</strong><br>
+                    "나왔는데 안 탔다?" or "탔는데 안 내렸다?"<br>
+                    ➔ <strong>즉시 경보 & 출발 차단</strong>
                 </div>
             </div>
-            <div style="text-align:center; font-size:0.8rem; color:#E74C3C; font-weight:bold; margin-top:10px;">
-                ※ 알고리즘 판독 불일치 시: 교사/학부모 앱으로 즉시 [긴급 확인] 알림 발송
+            <div style="margin-top:40px; padding:10px; background:#fff; border:1px dashed #ccc; border-radius:8px; font-size:0.85rem; color:#555;">
+                <strong>※ Manual Fallback (담당자 부담 최소화):</strong> 태그 미지참 원아는 교사/기사 앱 리스트에서 <strong>[이름 터치]</strong>만으로 수동 체크 가능. (데이터 즉시 동기화)
             </div>
         </div>
 
         <div class="card">
-            <h3>🎙️ AI Documentation (문서 변환 예시)</h3>
+            [span_20](start_span)<h3>🎙️ AI Admin Core (음성 → 문서 변환)[span_20](end_span)</h3>
             <div class="ai-box">
                 <div class="ai-input">
                     <div style="font-weight:bold; color:#64748B; margin-bottom:5px;">INPUT (교사 음성)</div>
                     "놀이터에서 민수가 넘어져서 무릎 찰과상. 보건실 소독했고 어머니께 2시에 전화드림."
                 </div>
-                <div class="ai-arrow">➡</div>
+                <div class="ai-arrow">➡ AI Processing ➡</div>
                 <div class="ai-output">
                     <div style="font-weight:bold; color:#0277BD; margin-bottom:5px;">OUTPUT (자동 문서화)</div>
                     <strong>[안전사고 보고서]</strong><br>
@@ -236,12 +306,12 @@
 
 <div class="section">
     <div class="container">
-        <h2>04. Financial Plan (상세) <span>수익 구조 및 손익 분석</span></h2>
-        <p style="margin-bottom:20px; color:#666;"><strong>[가정]</strong> 공립 단설 유치원 (5학급, 원아 100명, 버스 1대) 기준</p>
+        <h2>05. Financial Plan <span>수익 구조 및 손익 분석</span></h2>
+        [span_21](start_span)<p style="margin-bottom:20px; color:#666;"><strong>[가정]</strong> 공립 단설 유치원 (5학급, 원아 100명, 버스 1대) 기준[span_21](end_span)</p>
 
         <div class="grid-2">
             <div class="card">
-                <h3>💰 Pricing Structure (단가표)</h3>
+                [span_22](start_span)<h3>💰 Pricing (단가표)[span_22](end_span)</h3>
                 <table>
                     <thead>
                         <tr><th>항목</th><th>단가 (연간/VAT별도)</th><th>비고</th></tr>
@@ -261,7 +331,7 @@
                 <h3>📈 Sales Projection (3개년)</h3>
                 <div class="chart-container" style="height: 180px;"><canvas id="financialChart"></canvas></div>
                 <div style="font-size:0.85rem; color:#666; margin-top:15px; text-align:center;">
-                    * 2차년도부터 <strong>초등 돌봄교실</strong> 및 <strong>학부모 앱 광고</strong> 수익 본격화
+                    * [span_23](start_span)[span_24](start_span)2차년도부터 <strong>초등 늘봄교실</strong> 및 <strong>학부모 앱 광고</strong> 수익 본격화[span_23](end_span)[span_24](end_span)
                 </div>
             </div>
         </div>
@@ -273,7 +343,7 @@
             </p>
             <table>
                 <thead>
-                    <tr class="bg-head">
+                    <tr>
                         <th width="15%">구분</th>
                         <th width="25%">항목</th>
                         <th width="40%">산출 근거 (Formula)</th>
@@ -282,7 +352,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td rowspan="4" style="font-weight:bold; color:var(--primary);">매출<br>(Revenue)</td>
+                        <td rowspan="3" style="font-weight:bold; color:var(--primary);">매출<br>(Revenue)</td>
                         <td class="left">서비스 구독료</td>
                         <td class="left">100개소 × (240만원 + 72만원)</td>
                         <td class="right">312,000,000</td>
@@ -294,34 +364,28 @@
                     </tr>
                     <tr>
                         <td class="left">광고/부가수익</td>
-                        <td class="left">학부모 1만명 × 300원(CPM) × 12개월</td>
+                        [span_25](start_span)<td class="left">학부모 1만명 × 300원(CPM) × 12개월[span_25](end_span)</td>
                         <td class="right">36,000,000</td>
                     </tr>
-                    <tr class="bg-head">
-                        <td colspan="2" class="right">매출 합계</td>
-                        <td class="right" style="color:var(--primary);">448,000,000</td>
-                    </tr>
+                    <tr class="bg-head"><td colspan="2" class="right">매출 합계</td><td colspan="2" class="right" style="color:var(--primary);">448,000,000</td></tr>
 
                     <tr>
-                        <td rowspan="4" style="font-weight:bold; color:#E74C3C;">비용<br>(Expense)</td>
-                        <td class="left">매출원가 (COGS)</td>
-                        <td class="left">서버비(AWS), 지도API, NFC태그 구입비</td>
+                        <td rowspan="3" style="font-weight:bold; color:var(--accent);">비용<br>(Expense)</td>
+                        <td class="left">매출원가</td>
+                        <td class="left">서버비, 지도API, NFC태그</td>
                         <td class="right">40,000,000</td>
                     </tr>
                     <tr>
-                        <td class="left">인건비 (Labor)</td>
-                        <td class="left">개발 2인 + 영업/CS 1인 + 대표</td>
-                        <td class="right">200,000,000</td>
+                        <td class="left">인건비/판관비</td>
+                        <td class="left">개발/영업 인력 + 마케팅</td>
+                        <td class="right">270,000,000</td>
                     </tr>
                     <tr>
-                        <td class="left">판매관리비</td>
-                        <td class="left">마케팅(박람회), 출장비, 임대료</td>
-                        <td class="right">70,000,000</td>
+                        <td class="left">기타비용</td>
+                        <td class="left">예비비 등</td>
+                        <td class="right">0</td>
                     </tr>
-                    <tr class="bg-head">
-                        <td colspan="2" class="right">비용 합계</td>
-                        <td class="right" style="color:#E74C3C;">310,000,000</td>
-                    </tr>
+                    <tr class="bg-head"><td colspan="2" class="right">비용 합계</td><td colspan="2" class="right" style="color:var(--accent);">310,000,000</td></tr>
 
                     <tr class="total-row">
                         <td colspan="2">영업이익 (Profit)</td>
@@ -334,9 +398,9 @@
     </div>
 </div>
 
-<div class="section" style="background: var(--bg-light);">
+<div class="section">
     <div class="container">
-        <h2>05. Roadmap <span>단계별 실행 계획</span></h2>
+        <h2>06. Roadmap <span>단계별 실행 계획</span></h2>
         <div class="grid-3">
             <div class="card">
                 <div class="card-header" style="color:var(--text-sub);">Phase 1. 검증 (M1~4)</div>
@@ -365,7 +429,7 @@
                 <h3 style="color:var(--primary); margin:0 0 10px 0;">Scale-Up</h3>
                 <p style="font-weight:bold; margin-bottom:5px;">Target: 300+ & Elementary</p>
                 <ul style="font-size:0.9rem; padding-left:20px;">
-                    <li><strong>초등 돌봄/늘봄교실</strong> 패키지 런칭</li>
+                    [span_26](start_span)<li><strong>초등 돌봄/늘봄교실</strong> 패키지 런칭[span_26](end_span)</li>
                     <li>조달청(벤처나라) 등록</li>
                     <li>학부모 앱 커머스/광고 고도화</li>
                     <li><strong>* 매출 목표: 15억 원+</strong></li>
@@ -377,7 +441,7 @@
 
 <footer>
     <div class="container" style="text-align: center; color: #666; font-size: 0.9rem; padding: 40px 0;">
-        <p><strong>Scholix Business Plan</strong> | 예비창업패키지 최종 제출용 v6.0</p>
+        <p><strong>Scholix Business Plan</strong> | 예비창업패키지 최종 제출용 v7.0</p>
         <p>© 2026 Scholix Team. All Rights Reserved.</p>
     </div>
 </footer>
@@ -385,7 +449,56 @@
 <button class="print-btn" onclick="window.print()">🖨️ PDF 저장 / 인쇄</button>
 
 <script>
-    // 1. Financial Projection Chart (New)
+    // 1. TCO Comparison Chart
+    const tcoCtx = document.getElementById('tcoChart').getContext('2d');
+    new Chart(tcoCtx, {
+        type: 'bar',
+        data: {
+            labels: ['1년차', '2년차', '3년차'],
+            datasets: [
+                { label: '기존: 단말+통신 (근거 기반)', data: [110, 40, 40], backgroundColor: '#2980b9' },
+                { label: '기존: 단말+통신+관제SaaS (가정)', data: [180, 110, 110], backgroundColor: '#e67e22' },
+                { label: 'Scholix: 무설치 구독+도입비', data: [240, 140, 140], backgroundColor: '#27ae60' }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.raw + '만원'; } } } },
+            scales: { y: { beginAtZero: true, title: { display: true, text: '연간 비용 (만원)' } }, x: { grid: { display: false } } }
+        }
+    });
+
+    // 2. Accident Scale Chart
+    const accCtx = document.getElementById('accidentChart').getContext('2d');
+    new Chart(accCtx, {
+        type: 'bar',
+        data: {
+            labels: ['유치원 안전사고(2024)'],
+            datasets: [{ label: '발생 건수', data: [9802], backgroundColor: '#E74C3C' }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, title: { display: true, text: '건수' } }, x: { grid: { display: false } } }
+        }
+    });
+
+    // 3. Annual Value Chart
+    const valCtx = document.getElementById('valueChart').getContext('2d');
+    new Chart(valCtx, {
+        type: 'bar',
+        data: {
+            labels: ['행정시간 절감', '법규 위반 리스크', '안전운전 개선'],
+            datasets: [{ label: '가치 (만원)', data: [308, 26, 10], backgroundColor: ['#2980b9', '#e67e22', '#27ae60'] }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, title: { display: true, text: '가치 (만원)' } }, x: { grid: { display: false } } }
+        }
+    });
+
+    // 4. Financial Projection Chart
     new Chart(document.getElementById('financialChart'), {
         type: 'bar',
         data: {
@@ -402,16 +515,6 @@
             scales: { y: { beginAtZero: true, title: { display: true, text: '매출 (억 원)' } }, x: { grid: { display: false } } }
         }
     });
-
-    // 2. Cost Efficiency (Small Charts)
-    const costCtx = document.getElementById('costChart').getContext('2d');
-    new Chart(costCtx, { type: 'bar', data: { labels: ['기존 HW', 'Scholix'], datasets: [{ data: [180, 72], backgroundColor: ['#CBD5E1', '#153E7E'], borderRadius:5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
-
-    const timeCtx = document.getElementById('timeChart').getContext('2d');
-    new Chart(timeCtx, { type: 'doughnut', data: { labels: ['행정', '교육'], datasets: [{ data: [40, 60], backgroundColor: ['#CBD5E1', '#F1F5F9'] }, { data: [10, 90], backgroundColor: ['#153E7E', '#2ED573'] }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { display: false } } } });
-
-    const safetyCtx = document.getElementById('safetyChart').getContext('2d');
-    new Chart(safetyCtx, { type: 'line', data: { labels: ['발생', '보고'], datasets: [{ data: [0, 45], borderColor: '#BDC3C7', borderDash:[5,5] }, { data: [0, 3], borderColor: '#FF4757', backgroundColor:'rgba(255,71,87,0.1)', fill:true }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { display: false } } } });
 </script>
 
 </body>
