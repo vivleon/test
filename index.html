@@ -1,1174 +1,1090 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scholix - AI School Logic System (Final v7.2)</title>
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    :root {
-      /* Brand Identity */
-      --primary: #153E7E;    /* Navy: 신뢰, 전문성 */
-      --secondary: #00B4D8;  /* Blue: 혁신, AI, 연결 */
-      --accent: #E74C3C;     /* Red: 위험 감지, 골든타임 */
-      --success: #27AE60;    /* Green: 안전, 수익 */
-      --bg-light: #F8FAFC;
-      --text-main: #2C3E50;
-      --text-sub: #546E7A;
-      --border: #DFE6E9;
-      --shadow: 0 10px 30px rgba(2,6,23,0.08);
-      --shadow-soft: 0 6px 18px rgba(2,6,23,0.06);
-      --chip: #E2E8F0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholix - AI School Logic System (Final v7.3)</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            /* Brand Identity */
+            --primary: #153E7E;    /* Navy: 신뢰, 전문성 */
+            --secondary: #00B4D8;  /* Blue: 혁신, AI, 연결 */
+            --accent: #E74C3C;     /* Red: 위험 감지, 골든타임 */
+            --success: #27AE60;    /* Green: 안전, 수익 */
+            --bg-light: #F8FAFC;
+            --text-main: #2C3E50;
+            --text-sub: #546E7A;
+            --border: #DFE6E9;
 
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Pretendard', sans-serif;
-      margin: 0; padding: 0;
-      color: var(--text-main);
-      background-color: #fff;
-      line-height: 1.6;
-      -webkit-print-color-adjust: exact;
-    }
-    a { color: inherit; text-decoration: none; }
-    ul { margin: 0; }
+            /* Suite UI */
+            --bg-soft: #F1F5F9;
+            --bg-panel: #0B1220;
+            --panel-border: rgba(255,255,255,0.10);
+            --muted: #94A3B8;
+        }
 
-    /* Layout Utility */
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-    .section { padding: 70px 0; border-bottom: 1px solid var(--border); }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-    .muted { color: var(--text-sub); }
-    .small { font-size: 0.88rem; }
-    .tiny { font-size: 0.78rem; }
-    .pill { display:inline-block; padding: 4px 10px; border-radius: 999px; background: #0f172a0d; border: 1px solid #0f172a12; font-weight: 700; font-size: 0.78rem; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            margin: 0; padding: 0;
+            color: var(--text-main);
+            background-color: #fff;
+            line-height: 1.6;
+            -webkit-print-color-adjust: exact;
+        }
 
-    /* Header */
-    header {
-      background: linear-gradient(135deg, #0F172A, var(--primary));
-      color: white;
-      padding: 90px 0;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    header::before{
-      content:"";
-      position:absolute;
-      inset:-60px;
-      background:
-        radial-gradient(800px 300px at 20% 20%, rgba(0,180,216,0.25), transparent 60%),
-        radial-gradient(700px 260px at 80% 30%, rgba(21,62,126,0.35), transparent 60%),
-        radial-gradient(900px 320px at 50% 90%, rgba(231,76,60,0.18), transparent 60%);
-      filter: blur(2px);
-      pointer-events:none;
-    }
-    header .container { position: relative; z-index: 1; }
-    header h1 { font-size: 3.5rem; margin: 0; font-weight: 800; letter-spacing: -1px; }
-    header .brand-x { color: var(--secondary); }
-    header .subtitle { font-size: 1.4rem; opacity: 0.95; margin-top: 15px; font-weight: 500; }
-    header .tagline {
-      display: inline-block;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: var(--secondary);
-      padding: 8px 24px;
-      border-radius: 50px;
-      font-weight: 700;
-      margin-top: 25px;
-    }
+        /* Layout Utility */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 70px 0; border-bottom: 1px solid var(--border); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 
-    /* Typography & Components */
-    h2 {
-      font-size: 2.2rem;
-      color: #0F172A;
-      margin-bottom: 40px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    h2 span { font-size: 1.05rem; color: var(--text-sub); font-weight: 500; }
-    h3 { font-size: 1.3rem; margin-bottom: 15px; color: var(--primary); font-weight: 700; }
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0F172A, var(--primary));
+            color: white; padding: 90px 0; text-align: center; position: relative;
+        }
+        header h1 { font-size: 3.5rem; margin: 0; font-weight: 800; letter-spacing: -1px; }
+        header .brand-x { color: var(--secondary); }
+        header .subtitle { font-size: 1.4rem; opacity: 0.95; margin-top: 15px; font-weight: 500; }
+        header .tagline {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--secondary);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            margin-top: 25px;
+        }
 
-    .card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 25px;
-      box-shadow: var(--shadow-soft);
-      transition: all 0.3s ease;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-    .card-header {
-      font-weight: 800;
-      color: var(--text-main);
-      font-size: 1.1rem;
-      margin-bottom: 5px;
-      border-bottom: 2px solid var(--bg-light);
-      padding-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
+        /* Typography & Components */
+        h2 {
+            font-size: 2.2rem;
+            color: #0F172A;
+            margin-bottom: 40px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        h2 span { font-size: 1.1rem; color: var(--text-sub); font-weight: 500; margin-left: 6px; }
+        h3 { font-size: 1.3rem; margin-bottom: 15px; color: var(--primary); font-weight: 700; }
 
-    /* Flowchart Styles (무설치 추적 로직) */
-    .flow-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 10px;
-      background: #F1F5F9;
-      padding: 20px;
-      border-radius: 12px;
-      position: relative;
-      border: 1px solid #e2e8f0;
-    }
-    .flow-step { text-align: center; position: relative; width: 22%; z-index: 2; }
-    .flow-step .icon { font-size: 2rem; margin-bottom: 10px; display: block; }
-    .flow-step .label { font-size: 0.85rem; font-weight: 800; color: var(--primary); }
-    .flow-step .sub { font-weight: 500; font-size: 0.78rem; color: var(--text-sub); }
-    .flow-arrow { font-size: 1.5rem; color: #CBD5E1; font-weight: bold; }
-    .flow-alert-box {
-      position: absolute;
-      bottom: -68px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: white;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 800;
-      box-shadow: 0 10px 24px rgba(231, 76, 60, 0.18);
-      z-index: 3;
-      text-align:center;
-    }
-    .flow-connector {
-      position: absolute;
-      bottom: 22px;
-      left: 25%;
-      width: 50%;
-      height: 44px;
-      border-bottom: 2px dashed var(--accent);
-      border-left: 2px dashed var(--accent);
-      border-right: 2px dashed var(--accent);
-      border-radius: 0 0 20px 20px;
-      z-index: 1;
-      opacity: 0.85;
-    }
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-header {
+            font-weight: 800;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .ai-box { display: flex; gap: 20px; margin-top: 10px; align-items: stretch; }
-    .ai-input, .ai-output { flex: 1; padding: 15px; border-radius: 10px; font-size: 0.9rem; }
-    .ai-input { background: #F8F9FA; border: 1px dashed #A4B0BE; color: #747D8C; }
-    .ai-output { background: #E1F5FE; border: 1px solid #81D4FA; color: #0277BD; }
-    .ai-arrow { display:flex; align-items:center; justify-content:center; font-weight:900; color:#0F172A; opacity:0.7; min-width: 140px; }
+        /* [Flowchart Styles] */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            background: #F1F5F9;
+            padding: 20px;
+            border-radius: 12px;
+            position: relative;
+        }
+        .flow-step { text-align: center; position: relative; width: 22%; z-index: 2; }
+        .flow-step .icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .flow-step .label { font-size: 0.85rem; font-weight: 700; color: var(--primary); }
+        .flow-arrow { font-size: 1.5rem; color: #CBD5E1; font-weight: bold; }
+        .flow-alert-box {
+            position: absolute; bottom: -62px; left: 50%; transform: translateX(-50%);
+            background: white; border: 1px solid var(--accent); color: var(--accent);
+            padding: 10px 20px; border-radius: 50px; font-size: 0.85rem; font-weight: bold;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2); z-index: 3;
+            text-align: center;
+            max-width: 92%;
+        }
+        .flow-connector {
+            position: absolute; bottom: 20px; left: 25%; width: 50%; height: 40px;
+            border-bottom: 2px dashed var(--accent);
+            border-left: 2px dashed var(--accent);
+            border-right: 2px dashed var(--accent);
+            border-radius: 0 0 20px 20px; z-index: 1;
+        }
 
-    /* Tables & Charts */
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; font-size: 0.85rem; }
-    th { background: #E2E8F0; padding: 10px; text-align: center; border: 1px solid #CBD5E1; font-weight: 800; }
-    td { padding: 10px; border: 1px solid #E2E8F0; text-align: center; color: #334155; }
-    td.left { text-align: left; padding-left: 15px; }
-    td.right { text-align: right; padding-right: 15px; font-variant-numeric: tabular-nums; }
-    .total-row td { background: #FFF3E0; color: #D35400; font-weight: 900; }
-    .bg-head td { background: #F1F5F9; font-weight: 900; }
-    .chart-container { position: relative; height: 220px; width: 100%; margin-top: auto; }
-    .ref-text {
-      display: block;
-      font-size: 0.75rem;
-      color: #95A5A6;
-      margin-top: 8px;
-      font-style: italic;
-      text-align: right;
-    }
+        /* AI Box */
+        .ai-box { display: flex; gap: 20px; margin-top: 10px; align-items: stretch; }
+        .ai-input, .ai-output { flex: 1; padding: 15px; border-radius: 8px; font-size: 0.9rem; }
+        .ai-input { background: #F8F9FA; border: 1px dashed #A4B0BE; color: #747D8C; }
+        .ai-output { background: #E1F5FE; border: 1px solid #81D4FA; color: #0277BD; }
+        .ai-arrow { display:flex; align-items:center; justify-content:center; color:#94A3B8; font-weight:800; padding: 0 4px; white-space: nowrap; }
 
-    /* Badges */
-    .badge { font-size: 0.75rem; padding: 3px 8px; border-radius: 6px; background: #E2E8F0; color: #64748B; font-weight: 800; }
-    .badge.core { background: var(--primary); color: white; }
-    .badge.new { background: var(--secondary); color: white; }
-    .badge.risk { background: var(--accent); color: white; }
-    .badge.ok { background: var(--success); color: white; }
+        /* Tables & Charts */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; font-size: 0.85rem; }
+        th { background: #E2E8F0; padding: 10px; text-align: center; border: 1px solid #CBD5E1; font-weight: 700; }
+        td { padding: 10px; border: 1px solid #E2E8F0; text-align: center; }
+        td.left { text-align: left; padding-left: 15px; }
+        td.right { text-align: right; padding-right: 15px; }
+        .total-row td { background: #FFF3E0; color: #D35400; font-weight: 800; }
+        .chart-container { position: relative; height: 220px; width: 100%; margin-top: auto; }
+        .ref-text { display: block; font-size: 0.75rem; color: #95A5A6; margin-top: 8px; font-style: italic; text-align: right; }
 
-    /* Chips */
-    .chips { display:flex; flex-wrap:wrap; gap: 8px; margin-top: 6px; }
-    .chip {
-      background: var(--chip);
-      border: 1px solid #cbd5e1;
-      color: #334155;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 800;
-    }
+        /* Badges */
+        .badge { font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; background: #E2E8F0; color: #64748B; font-weight: 700; }
+        .badge.core { background: var(--primary); color: white; }
+        .badge.new { background: var(--secondary); color: white; }
+        .badge.risk { background: var(--accent); color: white; }
+        .badge.ok { background: var(--success); color: white; }
 
-    /* Mockups */
-    .mockup-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .phone {
-      background: #0b1220;
-      border-radius: 28px;
-      padding: 14px;
-      border: 1px solid #0b122033;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-    .phone::before{
-      content:"";
-      position:absolute;
-      top:10px; left:50%;
-      width: 110px; height: 22px;
-      transform: translateX(-50%);
-      background: #0f172a;
-      border-radius: 999px;
-      opacity: 0.9;
-      z-index:2;
-    }
-    .screen {
-      background: #ffffff;
-      border-radius: 22px;
-      padding: 16px;
-      min-height: 410px;
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-    }
-    .statusbar { display:flex; justify-content:space-between; font-weight:900; font-size:0.75rem; color:#0f172a; opacity:0.7; padding-top: 18px; }
-    .appbar { display:flex; justify-content:space-between; align-items:center; gap:8px; }
-    .appbar .title { font-size: 1rem; font-weight: 900; color:#0f172a; }
-    .iconbtn { width: 30px; height: 30px; border-radius: 10px; background:#0f172a0d; border:1px solid #0f172a12; display:flex; align-items:center; justify-content:center; font-weight: 900; }
-    .cta { background: linear-gradient(135deg, var(--primary), #0F172A); color:white; border-radius: 14px; padding: 12px; font-weight: 900; }
-    .panel { border:1px solid #e2e8f0; border-radius: 14px; padding: 12px; background: #f8fafc; }
-    .row { display:flex; justify-content:space-between; gap: 10px; align-items:flex-start; }
-    .kpi { font-weight: 900; color: var(--primary); }
-    .sub { color:#64748b; font-size: 0.8rem; }
-    .timeline { display:flex; flex-direction:column; gap: 10px; }
-    .event { display:flex; gap: 10px; align-items:flex-start; }
-    .dot { width: 10px; height: 10px; border-radius:999px; background: var(--secondary); margin-top: 5px; }
-    .dot.red { background: var(--accent); }
-    .dot.green { background: var(--success); }
-    .map {
-      height: 130px;
-      border-radius: 14px;
-      background:
-        linear-gradient(0deg, rgba(0,180,216,0.12), rgba(0,180,216,0.12)),
-        radial-gradient(120px 60px at 30% 40%, rgba(21,62,126,0.18), transparent 60%),
-        radial-gradient(140px 70px at 70% 70%, rgba(231,76,60,0.12), transparent 60%),
-        repeating-linear-gradient(90deg, #e2e8f0, #e2e8f0 6px, #f8fafc 6px, #f8fafc 12px);
-      border:1px solid #e2e8f0;
-      position: relative;
-      overflow: hidden;
-    }
-    .pin { position:absolute; width: 10px; height:10px; border-radius:999px; background: var(--accent); left: 55%; top: 45%; box-shadow: 0 0 0 8px rgba(231,76,60,0.15); }
-    .nav { display:flex; justify-content:space-around; gap: 8px; margin-top:auto; padding-top: 8px; border-top:1px solid #e2e8f0; }
-    .nav .tab { font-size: 0.72rem; font-weight: 900; color:#64748b; }
-    .nav .tab.active { color: var(--primary); }
+        /* Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+            z-index: 999;
+        }
 
-    /* Print Button */
-    .print-btn {
-      position: fixed;
-      bottom: 30px; right: 30px;
-      background: var(--primary);
-      color: white;
-      padding: 15px 30px;
-      border-radius: 999px;
-      border: none;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.25);
-      z-index: 999;
-    }
-    .download-bar {
-      position: fixed;
-      left: 30px;
-      bottom: 30px;
-      z-index: 998;
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .btn {
-      background: #0f172a;
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 999px;
-      border: none;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 5px 20px rgba(2,6,23,0.15);
-      display:flex;
-      align-items:center;
-      gap: 8px;
-      font-size: 0.9rem;
-    }
-    .btn.secondary { background: var(--secondary); color: #06121b; }
-    .btn.ghost { background: #ffffff; color:#0f172a; border:1px solid #0f172a1a; }
-    .btn:hover { filter: brightness(0.98); }
+        /* Mockups */
+        .mockup-wrap { display:flex; gap:18px; flex-wrap:wrap; }
+        .phone {
+            width: 260px;
+            background: #0B1220;
+            color: #E2E8F0;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 28px;
+            padding: 14px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+        }
+        .phone .notch { height: 20px; width: 110px; margin: 0 auto 12px; border-radius: 12px; background: rgba(255,255,255,0.08); }
+        .phone .screen {
+            background: #0F172A;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 14px;
+            min-height: 420px;
+            display:flex;
+            flex-direction:column;
+            gap: 10px;
+        }
+        .mock-title { font-size: 0.95rem; font-weight: 800; color: #E2E8F0; display:flex; justify-content:space-between; align-items:center; }
+        .pill {
+            font-size: 0.72rem;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: rgba(0,180,216,0.15);
+            border: 1px solid rgba(0,180,216,0.25);
+            color: #7DD3FC;
+            font-weight: 800;
+        }
+        .tile {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 10px 12px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap: 10px;
+        }
+        .tile .k { font-size: 0.78rem; color: #CBD5E1; }
+        .tile .v { font-size: 0.9rem; font-weight: 800; color: #E2E8F0; }
+        .btn {
+            width: 100%;
+            border: 0;
+            border-radius: 12px;
+            padding: 11px 12px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+        .btn.primary { background: linear-gradient(135deg, #00B4D8, #153E7E); color: white; }
+        .btn.danger { background: rgba(231,76,60,0.16); border: 1px solid rgba(231,76,60,0.30); color: #FCA5A5; }
+        .small { font-size: 0.76rem; color: #94A3B8; }
+        .row { display:flex; gap: 8px; }
+        .row > * { flex: 1; }
 
-    @media print {
-      .print-btn, .download-bar { display: none; }
-      .section { page-break-inside: avoid; }
-    }
-    @media (max-width: 900px){
-      .mockup-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 768px) {
-      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-      .flow-container, .ai-box { flex-direction: column; gap: 15px; }
-      .flow-step { width: 100%; }
-      .flow-alert-box { position: static; transform: none; margin-top: 15px; border-radius: 16px; }
-      .flow-connector { display: none; }
-      .ai-arrow { min-width: auto; }
-    }
-    code.k { background:#0f172a0d; border:1px solid #0f172a12; padding:2px 6px; border-radius: 8px; font-weight: 900; }
-  </style>
+        /* Suite Boards */
+        .suite {
+            background: var(--bg-soft);
+            border-radius: 16px;
+            padding: 18px;
+            border: 1px solid #E2E8F0;
+        }
+        .suite-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .suite-card {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 14px;
+        }
+        .suite-card h4 { margin: 0 0 6px 0; font-size: 1.02rem; color: #0F172A; }
+        .suite-card ul { margin: 8px 0 0; padding-left: 18px; color: #475569; font-size: 0.9rem; }
+        .suite-card li { margin-bottom: 6px; }
+
+        /* Logic Blocks */
+        .logic {
+            background: #0B1220;
+            color: #E2E8F0;
+            border-radius: 14px;
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.10);
+        }
+        .logic h4 { margin: 0 0 10px 0; color: #7DD3FC; }
+        .logic pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 0.84rem;
+            line-height: 1.45;
+            color: #E2E8F0;
+        }
+
+        /* Responsive */
+        @media print { .print-btn { display: none; } .section { page-break-inside: avoid; } }
+        @media (max-width: 980px) { .suite-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .flow-container, .ai-box { flex-direction: column; gap: 15px; }
+            .flow-step { width: 100%; }
+            .flow-alert-box { position: static; transform: none; margin-top: 15px; }
+            .flow-connector { display: none; }
+            header h1 { font-size: 2.6rem; }
+        }
+    </style>
 </head>
-
 <body>
+
 <header>
-  <div class="container">
-    <h1>Scholi<span class="brand-x">x</span></h1>
-    <div class="subtitle">AI School Logic & Operation System</div>
-    <div class="tagline">Zero-Hardware • Triple-Check Safety • Voice AI</div>
-    <p style="margin-top: 25px; opacity: 0.9;">
-      "선생님의 행정 업무는 AI로, 원아의 이동 경로는 빈틈없이."<br>
-      유치원부터 초등학교 돌봄까지, 학교 운영의 새로운 표준 (OS)
-    </p>
-  </div>
+    <div class="container">
+        <h1>Scholi<span class="brand-x">x</span></h1>
+        <div class="subtitle">AI School Logic & Operation System</div>
+        <div class="tagline">Zero-Hardware • Triple-Check Safety • Voice AI</div>
+        <p style="margin-top: 25px; opacity: 0.9;">
+            "선생님의 행정 업무는 AI로, 원아의 이동 경로는 빈틈없이."<br>
+            유치원부터 초등학교 돌봄까지, 학교 운영의 새로운 표준 (OS)
+        </p>
+    </div>
 </header>
 
-<!-- 01 -->
 <div class="section" style="background: var(--bg-light);">
-  <div class="container">
-    <h2>01. Project Canvas <span>문제 정의 및 핵심 솔루션</span></h2>
-    <div class="grid-2">
-      <div class="card">
-        <h3>🚫 Pain Points (문제)</h3>
-        <ul style="padding-left: 20px; color: var(--text-sub);">
-          <li style="margin-bottom:10px;">
-            <strong>인계 공백 (Hand-over Gap):</strong> 교실에서 나왔으나(하원), 버스에 타지 않은(미탑승) '이동 구간' 사각지대 존재.<br>
-            <span class="ref-text">[Ref-1] 2024 유치원 안전사고 9,802건 중 '통학/이동' 사고 상존</span>
-          </li>
-          <li style="margin-bottom:10px;">
-            <strong>행정 업무 과중:</strong> 교사 업무 40%가 단순 기록/입력(투약, 귀가동의, 안전일지).<br>
-            <span class="ref-text">[Ref-4] OECD TALIS 2024: 한국 교사 주당 행정업무 6시간</span>
-          </li>
-          <li style="margin-bottom:10px;">
-            <strong>도입 비용 장벽:</strong> 5학급 미만 소규모 유치원은 고가 장비(비콘/리더기/DTG) 설치 불가.<br>
-            <span class="ref-text">[Ref-5] DTG+LTE 비용: 초기 40만 + 월 1.6만/대</span>
-          </li>
-        </ul>
-        <div class="chips">
-          <span class="chip">NEIS 공존(무연동) 설계</span>
-          <span class="chip">현장 입력 최소화</span>
-          <span class="chip">업무 표준화</span>
+    <div class="container">
+        <h2>01. Project Canvas <span>문제 정의 및 핵심 솔루션</span></h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🚫 Pain Points (문제)</h3>
+                <ul style="padding-left: 20px; color: var(--text-sub);">
+                    <li style="margin-bottom:10px;">
+                        <strong>인계 공백 (Hand-over Gap):</strong> 교실에서 나왔으나(하원), 버스에 타지 않은(미탑승) '이동 구간' 사각지대 존재.<br>
+                        <span class="ref-text">[Ref-1] 2024 유치원 안전사고 9,802건 중 '통학/이동' 사고 상존</span>
+                    </li>
+                    <li style="margin-bottom:10px;">
+                        <strong>행정 업무 과중:</strong> 교사 업무 40%가 단순 기록/입력(투약, 귀가동의, 안전일지).<br>
+                        <span class="ref-text">[Ref-4] OECD TALIS 2024: 한국 교사 주당 행정업무 6시간</span>
+                    </li>
+                    <li style="margin-bottom:10px;">
+                        <strong>도입 비용 장벽:</strong> 5학급 미만 소규모 유치원은 고가 장비(비콘/리더기/DTG) 설치 불가.<br>
+                        <span class="ref-text">[Ref-5] DTG+LTE 비용: 초기 40만 + 월 1.6만/대</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="card" style="border-color: var(--secondary);">
+                <h3>💡 Scholix Solution (해결)</h3>
+                <ul style="padding-left: 20px;">
+                    <li style="margin-bottom:10px;"><strong>AI Admin Core:</strong> 음성 한 줄로 [안전일지+투약의뢰+보고서] 자동 생성.</li>
+                    <li style="margin-bottom:10px;"><strong>Triple-Check Logic:</strong> [교실하원 → 버스탑승 → 버스하차] 3단계 추적으로 누락 원천 봉쇄.</li>
+                    <li style="margin-bottom:10px;"><strong>Zero-Hardware:</strong> 교사/기사 스마트폰 = NFC 리더기. (도입비 0원).</li>
+                </ul>
+            </div>
         </div>
-      </div>
 
-      <div class="card" style="border-color: var(--secondary);">
-        <h3>💡 Scholix Solution (해결)</h3>
-        <ul style="padding-left: 20px;">
-          <li style="margin-bottom:10px;"><strong>AI Admin Core:</strong> 음성 한 줄로 [안전일지+투약의뢰+보고서] 자동 생성.</li>
-          <li style="margin-bottom:10px;"><strong>Triple-Check Logic:</strong> [교실하원 → 버스탑승 → 버스하차] 3단계 추적으로 누락 원천 봉쇄.</li>
-          <li style="margin-bottom:10px;"><strong>Zero-Hardware:</strong> 교사/기사 스마트폰 = NFC 리더기. (도입비 0원).</li>
-          <li style="margin-bottom:10px;"><strong>NEIS-Ready Output:</strong> 연동 대신 <code class="k">NEIS 입력용 요약/서식</code> 자동 생성(복붙/다운로드).</li>
-        </ul>
-        <div class="chips">
-          <span class="chip">모바일 1탭</span>
-          <span class="chip">오프라인 캐시</span>
-          <span class="chip">감사로그</span>
+        <div class="card" style="margin-top: 30px;">
+            <div class="card-header">🎯 Target & Strategy (타겟 및 확장 전략)</div>
+            <div class="grid-3">
+                <div style="text-align: center; border-right: 1px solid #eee;">
+                    <strong style="color: var(--primary); display: block;">1차 타겟 (MVP)</strong>
+                    <span style="font-size: 0.9rem; color: #666;">공립 단설/병설 유치원<br>(평균 6-10학급, 버스 1-3대)</span>
+                </div>
+                <div style="text-align: center; border-right: 1px solid #eee;">
+                    <strong style="color: var(--secondary); display: block;">핵심 가치</strong>
+                    <span style="font-size: 0.9rem; color: #666;">예산 절감 (0원 도입)<br>감사 리스크 해소</span>
+                </div>
+                <div style="text-align: center;">
+                    <strong style="color: var(--text-main); display: block;">확장 전략</strong>
+                    <span style="font-size: 0.9rem; color: #666;">교육지원청 통합 계약<br>→ 초등 늘봄/돌봄학교</span>
+                </div>
+            </div>
+            <div class="ref-text">* 기관 분포/학급·원아 수 산정 근거: 유치원알리미 공시 및 교육부 교육기본통계 기준 (Ref-2, Ref-3)</div>
         </div>
-      </div>
     </div>
-
-    <div class="card" style="margin-top: 30px;">
-      <div class="card-header">🎯 Target & Strategy (타겟 및 확장 전략)</div>
-      <div class="grid-3">
-        <div style="text-align: center; border-right: 1px solid #eee;">
-          <strong style="color: var(--primary); display: block;">1차 타겟 (MVP)</strong>
-          <span style="font-size: 0.9rem; color: #666;">공립 단설/병설 유치원<br>(평균 6-10학급, 버스 1-3대)</span>
-        </div>
-        <div style="text-align: center; border-right: 1px solid #eee;">
-          <strong style="color: var(--secondary); display: block;">핵심 가치</strong>
-          <span style="font-size: 0.9rem; color: #666;">예산 절감 (0원 도입)<br>감사 리스크 해소</span>
-        </div>
-        <div style="text-align: center;">
-          <strong style="color: var(--text-main); display: block;">확장 전략</strong>
-          <span style="font-size: 0.9rem; color: #666;">교육지원청 통합 계약<br>→ 초등 늘봄/돌봄학교</span>
-        </div>
-      </div>
-      <div class="ref-text">* 기관 분포/학급·원아 수 산정 근거: 유치원알리미 공시 및 교육부 교육기본통계 기준 (Ref-2, Ref-3)</div>
-    </div>
-  </div>
 </div>
 
-<!-- 02 -->
 <div class="section">
-  <div class="container">
-    <h2>02. Data Analysis <span>기회비용 및 기대효과 (근거 기반)</span></h2>
-    <p style="margin-bottom:20px; color:#666; font-size:0.9rem;">
-      <strong>[Reference]</strong> 학교안전공제중앙회(SSIF) 2024 통계 및 교육부 유치원 현황 기반 분석
-    </p>
-    <div class="ref-text">* 사고 규모: SSIF 2024 (Ref-1) · 기관/원아 수: 유치원알리미 및 교육기본통계 (Ref-2, Ref-3)</div>
-
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-header">💰 3년 총소유비용 (TCO) 비교 <span class="badge ok">Cost</span></div>
-        <p style="font-size:0.85rem; text-align:center; color:#666; margin-bottom:10px;">
-          버스 2대 기준, 하드웨어 제거로 <strong>약 40% 절감</strong>
+    <div class="container">
+        <h2>02. Data Analysis <span>기회비용 및 기대효과 (근거 기반)</span></h2>
+        <p style="margin-bottom:20px; color:#666; font-size:0.9rem;">
+            <strong>[Reference]</strong> 학교안전공제중앙회(SSIF) 2024 통계 및 교육부 유치원 현황 기반 분석
         </p>
-        <div class="chart-container"><canvas id="tcoChart"></canvas></div>
-        <div class="ref-text">* 근거: DTG/통신비(Ref-5) vs Scholix 구독</div>
-      </div>
+        <div class="ref-text">* 사고 규모: SSIF 2024 (Ref-1) · 기관/원아 수: 유치원알리미 및 교육기본통계 (Ref-2, Ref-3)</div>
 
-      <div class="card">
-        <div class="card-header">🚨 유치원 안전사고 규모 (Risk) <span class="badge risk">Risk</span></div>
-        <p style="font-size:0.85rem; text-align:center; color:#666; margin-bottom:10px;">
-          연간 <strong>9,802건</strong> 발생 (상시 리스크)
-        </p>
-        <div class="chart-container"><canvas id="accidentChart"></canvas></div>
-        <div class="ref-text">* 출처: SSIF 2024 통계</div>
-      </div>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-header">💰 3년 총소유비용 (TCO) 비교</div>
+                <p style="font-size:0.85rem; text-align:center; color:#666; margin-bottom:10px;">
+                    버스 2대 기준, 하드웨어 제거로 <strong>약 40% 절감</strong>
+                </p>
+                <div class="chart-container"><canvas id="tcoChart"></canvas></div>
+                <div class="ref-text">* 근거: DTG/통신비(Ref-5) vs Scholix 구독</div>
+            </div>
 
-      <div class="card">
-        <div class="card-header">📊 연간 도입 가치 (Value) <span class="badge new">ROI</span></div>
-        <p style="font-size:0.85rem; text-align:center; color:#666; margin-bottom:10px;">
-          행정시간 절감 + 리스크 방지 = <strong>연 3억+ 효과 (추정)</strong>
-        </p>
-        <div class="chart-container"><canvas id="valueChart"></canvas></div>
-        <div class="ref-text">* 모델 가정: 1기관 기준 (보수적). 안전운전 개선 효과 참고: BMJ Injury Prevention 2025 연구 (Ref-7)</div>
-      </div>
+            <div class="card">
+                <div class="card-header">🚨 유치원 안전사고 규모 (Risk)</div>
+                <p style="font-size:0.85rem; text-align:center; color:#666; margin-bottom:10px;">
+                    연간 <strong>9,802건</strong> 발생 (상시 리스크)
+                </p>
+                <div class="chart-container"><canvas id="accidentChart"></canvas></div>
+                <div class="ref-text">* 출처: SSIF 2024 통계</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">📊 연간 도입 가치 (Value)</div>
+                <p style="font-size:0.85rem; text-align:center; color:#666; margin-bottom:10px;">
+                    행정시간 절감 + 리스크 방지 = <strong>연 3억+ 효과 (추정)</strong>
+                </p>
+                <div class="chart-container"><canvas id="valueChart"></canvas></div>
+                <div class="ref-text">* 모델 가정: 1기관 기준 (보수적). 안전운전 개선 효과 참고: BMJ Injury Prevention 2025 연구 (Ref-7)</div>
+            </div>
+        </div>
     </div>
-
-    <div class="grid-2" style="margin-top: 18px;">
-      <div class="card">
-        <div class="card-header">🧩 NEIS 공존(무연동) 전략 <span class="badge">Pragmatic</span></div>
-        <div class="small muted">
-          연동 난이도/승인 리스크를 회피하고, 현장 번거로움을 최소화하는 운영 모델을 기본값으로 설계합니다.
-        </div>
-        <ul style="padding-left: 20px; margin-top: 6px;">
-          <li><strong>자동 생성 산출물:</strong> 출석/안전/투약/귀가 관련 <strong>NEIS 입력용 요약</strong>(복붙) + <strong>표준 HWP/DOCX</strong> 출력.</li>
-          <li><strong>정합성:</strong> Scholix는 <strong>현장 이벤트의 원천 로그</strong>(누가/언제/어디서/무엇을)를 남기고, NEIS는 <strong>최종 보고</strong>로 유지.</li>
-          <li><strong>감사 대응:</strong> 문서 생성/수정/승인/배포 <strong>감사 로그</strong> 자동 적재.</li>
-        </ul>
-        <div class="ref-text">* NEIS 기능/기관별 운영은 상이하므로 파일럿 사전진단(Section 08)으로 실제 반복업무를 먼저 확정</div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">📌 파일럿 KPI (측정 가능한 증빙) <span class="badge core">KPI</span></div>
-        <div class="grid-4">
-          <div class="panel">
-            <div class="kpi">-30%</div>
-            <div class="sub">행정 시간(주)</div>
-          </div>
-          <div class="panel">
-            <div class="kpi">≤ 2분</div>
-            <div class="sub">사고 기록 완료</div>
-          </div>
-          <div class="panel">
-            <div class="kpi">99%+</div>
-            <div class="sub">탑승/하차 정합성</div>
-          </div>
-          <div class="panel">
-            <div class="kpi">0건</div>
-            <div class="sub">누락 경보 미처리</div>
-          </div>
-        </div>
-        <div class="small muted">
-          * 파일럿 실측치 확보 후, 현재 가정값(추정)을 실측치로 치환하여 근거 수준을 상향합니다.
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
-<!-- 03 -->
 <div class="section" style="background: var(--bg-light);">
-  <div class="container">
-    <h2>03. 3 Core Solutions <span>핵심 기능 상세</span></h2>
-
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-header">① AI Admin (행정) <span class="badge core">Core</span></div>
-        <ul style="font-size: 0.9rem; padding-left: 20px;">
-          <li style="margin-bottom: 8px;"><strong>전자출석/요약:</strong> 태깅·이벤트 로그 → <strong>NEIS 입력용 요약</strong> 자동 생성(복붙/다운로드).</li>
-          <li style="margin-bottom: 8px;"><strong>AI Safety Pack:</strong> 사고 발생 시 음성(STT) → 육하원칙 경위서/보고서 변환.</li>
-          <li style="margin-bottom: 8px;"><strong>문서 표준화:</strong> 기관 표준 문구/금지 표현 가이드 적용(민원 예방).</li>
-          <li><strong>평가 증빙 OS:</strong> 평가지표별 사진/문서 자동 분류 및 저장.</li>
-        </ul>
-      </div>
-
-      <div class="card" style="border: 2px solid var(--secondary);">
-        <div class="card-header" style="color:var(--secondary);">② Triple Check (안전) <span class="badge new">Logic</span></div>
-        <ul style="font-size: 0.9rem; padding-left: 20px;">
-          <li style="margin-bottom: 8px;"><strong>Triple-Check:</strong> [교실(하원) → 버스(탑승) → 집(하차)] 3단계 추적.</li>
-          <li style="margin-bottom: 8px;"><strong>Cross Check:</strong> "게이트 아웃 OK, 탑승 미확인" 시 <strong>즉시 경보</strong>.</li>
-          <li style="margin-bottom: 8px;"><strong>버스 연동 최소화:</strong> 기존 업체 로그를 <strong>수동 업로드/조회</strong> 형태로 수용 가능(기관별 상이성 흡수).</li>
-          <li style="background:#FFF3E0; padding:6px 10px; border-radius:10px;"><strong>Manual Fallback:</strong> 태그 분실 시 교사/기사 앱에서 <strong>[이름 터치]</strong>로 수동 체크 (예외처리).</li>
-        </ul>
-        <div class="ref-text">* 법규 리스크(하차 확인 의무/제재): 법제처 보도자료 기준 (Ref-6)</div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">③ Parent Link (학부모 앱) <span class="badge">App</span></div>
-        <ul style="font-size: 0.9rem; padding-left: 20px;">
-          <li style="margin-bottom: 8px;"><strong>폐쇄형 인증:</strong> 초대코드 → 자녀 매칭 → 관리자 승인 3단계.</li>
-          <li style="margin-bottom: 8px;"><strong>이동 이벤트 알림:</strong> Gate-Out/Boarding/Drop-off 푸시 + 예외(미탑승/미하차) 즉시 알림.</li>
-          <li style="margin-bottom: 8px;"><strong>서류 디지털화:</strong> 투약의뢰서/결석계/귀가동의서 앱 제출 (종이 서류 0).</li>
-          <li><strong>Clean AD:</strong> 지역 기반 교육정보(수익 모델) — 파일럿에서는 기본 OFF.</li>
-        </ul>
-      </div>
+    <div class="container">
+        <h2>03. 3 Core Solutions <span>핵심 기능 상세</span></h2>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-header">① AI Admin (행정) <span class="badge core">Core</span></div>
+                <ul style="font-size: 0.9rem; padding-left: 20px;">
+                    <li style="margin-bottom: 8px;"><strong>전자출석부:</strong> 태깅 데이터 → 법정 서식(NEIS 연동형) 자동 매핑.</li>
+                    <li style="margin-bottom: 8px;"><strong>AI Safety Pack:</strong> 사고 발생 시 음성(STT) → 육하원칙 경위서/보고서 변환.</li>
+                    <li><strong>평가 증빙 OS:</strong> 평가지표별 사진/문서 자동 분류 및 저장.</li>
+                </ul>
+            </div>
+            <div class="card" style="border: 2px solid var(--secondary);">
+                <div class="card-header" style="color:var(--secondary);">② Triple Check (안전) <span class="badge new">Logic</span></div>
+                <ul style="font-size: 0.9rem; padding-left: 20px;">
+                    <li style="margin-bottom: 8px;"><strong>Triple-Check:</strong> [교실(하원) → 버스(탑승) → 집(하차)] 3단계 추적.</li>
+                    <li style="margin-bottom: 8px;"><strong>Cross Check:</strong> "게이트 아웃 OK, 탑승 미확인" 시 <strong>즉시 경보</strong>.</li>
+                    <li style="background:#FFF3E0; padding:3px;"><strong>Manual Fallback:</strong> 태그 분실 시 교사/기사 앱에서 <strong>[수동 체크]</strong> (예외처리).</li>
+                </ul>
+                <div class="ref-text">* 법규 리스크(하차 확인 의무/제재): 법제처 보도자료 기준 (Ref-6)</div>
+            </div>
+            <div class="card">
+                <div class="card-header">③ Parent Link (앱) <span class="badge">App</span></div>
+                <ul style="font-size: 0.9rem; padding-left: 20px;">
+                    <li style="margin-bottom: 8px;"><strong>안심 알림:</strong> "탑승/하차" 푸시 알림 + 폐쇄형 인증(초대코드).</li>
+                    <li style="margin-bottom: 8px;"><strong>민원 디지털화:</strong> 투약의뢰서, 결석계, 귀가동의서 앱 제출 (종이 서류 0).</li>
+                    <li><strong>Clean AD:</strong> 지역 기반 교육정보(수익 모델).</li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-    <div class="card" style="margin-top: 18px;">
-      <div class="card-header">🔐 RBAC & Audit (권한/감사 로그) <span class="badge">Governance</span></div>
-      <div class="grid-3">
-        <div class="panel">
-          <div class="kpi">Teacher</div>
-          <div class="sub">Gate-Out / 사고음성기록 / 문서 초안 생성</div>
-          <div class="chips">
-            <span class="chip">Create</span><span class="chip">View</span><span class="chip">Draft</span>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="kpi">Driver</div>
-          <div class="sub">Boarding/Drop-off 태깅 / 운행 시작·종료 / 예외 처리</div>
-          <div class="chips">
-            <span class="chip">Tag</span><span class="chip">View</span><span class="chip">Exception</span>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="kpi">Admin</div>
-          <div class="sub">승인/배포/다운로드 / 정책 설정 / 감사 로그 열람</div>
-          <div class="chips">
-            <span class="chip">Approve</span><span class="chip">Publish</span><span class="chip">Audit</span>
-          </div>
-        </div>
-      </div>
-      <div class="ref-text">* 모든 중요 액션은 감사 로그(생성/수정/승인/배포/다운로드)를 남기며, 파일럿 기준으로 기본 ON</div>
-    </div>
-  </div>
 </div>
 
-<!-- 04 -->
 <div class="section" style="background: #F0F4F8;">
-  <div class="container">
-    <h2>04. How It Works <span>(핵심 작동 원리 시각화)</span></h2>
+    <div class="container">
+        <h2>04. How It Works <span>(핵심 작동 원리 시각화)</span></h2>
 
-    <div class="card" style="margin-bottom: 30px;">
-      <h3>📍 Triple-Check Tracking Flow (무설치/누락방지 로직)</h3>
-      <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">
-        별도 리더기 없이 <strong>스마트폰 + NFC 스티커/태그</strong>만으로 교실에서 하차까지 끊김 없이 추적합니다.
-        <span class="pill">기관별 버스 운영 상이성 → 업로드/조회/예외처리로 흡수</span>
-      </p>
+        <div class="card" style="margin-bottom: 30px;">
+            <h3>📍 Triple-Check Tracking Flow (무설치/누락방지 로직)</h3>
+            <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">
+                별도 리더기 없이 <strong>스마트폰 + 스티커</strong>만으로 교실에서 하차까지 끊김 없이 추적합니다.
+            </p>
 
-      <div class="flow-container">
-        <div class="flow-step">
-          <span class="icon">🏫</span>
-          <div class="label">Step 1. 하원 (Gate-Out)</div>
-          <div class="sub">(담임: 1탭/스캔)</div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <span class="icon">🚌</span>
-          <div class="label">Step 2. 탑승 (Boarding)</div>
-          <div class="sub">(기사: 1탭/스캔)</div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <span class="icon">🏠</span>
-          <div class="label">Step 3. 하차 (Drop-off)</div>
-          <div class="sub">(기사: 1탭/스캔)</div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <span class="icon">✅</span>
-          <div class="label" style="color:var(--success);">안전 귀가 완료</div>
-          <div class="sub">(부모 알림 발송)</div>
+            <div class="flow-container">
+                <div class="flow-step">
+                    <span class="icon">🏫</span>
+                    <div class="label">Step 1. 하원 (Gate-Out)<br><span style="font-weight:400; font-size:0.8rem;">(담임: 1탭/스캔)</span></div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="icon">🚌</span>
+                    <div class="label">Step 2. 탑승 (Boarding)<br><span style="font-weight:400; font-size:0.8rem;">(기사: 1탭/스캔)</span></div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="icon">🏠</span>
+                    <div class="label">Step 3. 하차 (Drop-off)<br><span style="font-weight:400; font-size:0.8rem;">(기사: 1탭/스캔)</span></div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="icon">✅</span>
+                    <div class="label" style="color:var(--success);">안전 귀가 완료<br><span style="font-weight:400; font-size:0.8rem;">(부모 알림 발송)</span></div>
+                </div>
+
+                <div class="flow-connector"></div>
+                <div class="flow-alert-box">
+                    🧠 <strong>Auto-Reconciliation:</strong><br>
+                    "나왔는데 안 탔다?" or "탔는데 안 내렸다?"<br>
+                    ➔ <strong>즉시 경보 & 출발 차단</strong>
+                </div>
+            </div>
+
+            <div style="margin-top:44px; padding:10px; background:#fff; border:1px dashed #ccc; border-radius:8px; font-size:0.85rem; color:#555;">
+                <strong>※ Manual Fallback (담당자 부담 최소화):</strong> 태그 미지참 원아는 교사/기사 앱 리스트에서 <strong>[이름 터치]</strong>만으로 수동 체크 가능. (데이터 즉시 동기화)
+            </div>
         </div>
 
-        <div class="flow-connector"></div>
-        <div class="flow-alert-box">
-          🧠 <strong>Auto-Reconciliation</strong> ·
-          "나왔는데 안 탔다?" / "탔는데 안 내렸다?" → <strong>즉시 경보</strong>
+        <div class="card">
+            <h3>🎙️ AI Admin Core (음성 → 문서 변환)</h3>
+            <div class="ai-box">
+                <div class="ai-input">
+                    <div style="font-weight:bold; color:#64748B; margin-bottom:5px;">INPUT (교사 음성)</div>
+                    "놀이터에서 민수가 넘어져서 무릎 찰과상. 보건실 소독했고 어머니께 2시에 전화드림."
+                </div>
+                <div class="ai-arrow">➡ AI Processing ➡</div>
+                <div class="ai-output">
+                    <div style="font-weight:bold; color:#0277BD; margin-bottom:5px;">OUTPUT (자동 문서화)</div>
+                    <strong>[안전사고 보고서]</strong><br>
+                    • 일시/장소: 2026.03.15 11:30 / 실외 놀이터<br>
+                    • 조치: 보건실 처치 (소독)<br>
+                    • 보호자 연락: 14:00 (유선 완료)
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div style="margin-top:46px; padding:12px 14px; background:#fff; border:1px dashed #cbd5e1; border-radius:12px; font-size:0.88rem; color:#475569;">
-        <strong>※ Manual Fallback (담당자 부담 최소화):</strong>
-        태그 미지참 원아는 교사/기사 앱 리스트에서 <strong>[이름 터치]</strong>만으로 수동 체크 가능. (데이터 즉시 동기화)
-      </div>
     </div>
-
-    <div class="card">
-      <h3>🎙️ AI Admin Core (음성 → 문서 변환)</h3>
-      <div class="ai-box">
-        <div class="ai-input">
-          <div style="font-weight:900; color:#64748B; margin-bottom:5px;">INPUT (교사 음성)</div>
-          "놀이터에서 민수가 넘어져서 무릎 찰과상. 보건실 소독했고 어머니께 2시에 전화드림."
-        </div>
-        <div class="ai-arrow">➡ AI Processing ➡</div>
-        <div class="ai-output">
-          <div style="font-weight:900; color:#0277BD; margin-bottom:5px;">OUTPUT (자동 문서화)</div>
-          <strong>[안전사고 보고서]</strong><br />
-          • 일시/장소: 2026.03.15 11:30 / 실외 놀이터<br />
-          • 조치: 보건실 처치 (소독)<br />
-          • 보호자 연락: 14:00 (유선 완료)<br />
-          • NEIS 입력 요약: <em>사고유형/조치/연락/결과</em> 자동 정리
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
-<!-- 04.1 Parent App -->
-<div class="section">
-  <div class="container">
-    <h2>04-A. Parent App Mockups <span>학부모 앱 화면 목업 + 로직 고려</span></h2>
-    <p class="muted small" style="margin-bottom: 18px;">
-      아래 목업은 “로직 설계가 화면에 자연스럽게 반영되는가”를 검증하기 위한 시각화 산출물입니다.
-      (초보 개발팀 기준으로 구현 난이도를 낮추기 위해 <strong>핵심 흐름(초대/승인/알림/서류제출/셔틀현황)</strong>에 집중)
-    </p>
+<!-- v7.3 ADD: Parent App Mockups -->
+<div class="section" style="background: #ffffff;">
+    <div class="container">
+        <h2>04-A. Parent App Mockups <span>학부모 앱 화면 목업 + 로직 고려</span></h2>
 
-    <div class="mockup-grid">
-      <!-- Mockup 1 -->
-      <div class="phone">
-        <div class="screen">
-          <div class="statusbar"><span>09:41</span><span>5G • 82%</span></div>
-          <div class="appbar">
-            <div class="title">Scholix Parent</div>
-            <div class="iconbtn">⋯</div>
-          </div>
-          <div class="cta">
-            초대코드를 입력하세요<br /><span style="font-weight:700; opacity:0.9;">(폐쇄형 인증 1/3)</span>
-          </div>
-          <div class="panel">
-            <div class="row">
-              <div>
-                <div style="font-weight:900;">초대코드</div>
-                <div class="sub">기관에서 제공한 6~8자리 코드</div>
-              </div>
-              <div class="pill">INV-8921</div>
+        <div class="card" style="margin-bottom: 18px;">
+            <div class="card-header">
+                <div>학부모 앱 핵심 UX 목표</div>
+                <span class="badge ok">Low Friction</span>
             </div>
-            <div class="row" style="margin-top:10px;">
-              <div class="pill">다음</div>
-              <div class="pill" style="background:#fff;">문의</div>
-            </div>
-          </div>
-          <div class="panel">
-            <div style="font-weight:900;">로직</div>
-            <div class="sub">inviteCode → 기관 조회 → 보호자 휴대폰 인증 → 자녀 후보 리스트 노출</div>
-          </div>
-          <div class="nav">
-            <div class="tab active">홈</div><div class="tab">셔틀</div><div class="tab">서류</div><div class="tab">알림</div>
-          </div>
+            <ul style="margin:0; padding-left: 18px; color:#475569;">
+                <li><strong>알림 중심(Notifications-first):</strong> “탑승/하차/지연/미탑승”이 홈의 1순위</li>
+                <li><strong>증빙 자동화:</strong> 투약의뢰/결석계/귀가동의서 등 제출 → 교사앱 승인 → 기관 로그</li>
+                <li><strong>보호자 책임 경계:</strong> 알림은 “사실 기반 로그”로 제공(추정 표현 최소화)</li>
+                <li><strong>개인정보 최소화:</strong> 닉네임/초대코드 기반, 아동 민감정보 노출 최소</li>
+            </ul>
         </div>
-      </div>
 
-      <!-- Mockup 2 -->
-      <div class="phone">
-        <div class="screen">
-          <div class="statusbar"><span>09:41</span><span>Wi-Fi • 82%</span></div>
-          <div class="appbar">
-            <div class="title">자녀 연결</div>
-            <div class="iconbtn">?</div>
-          </div>
-          <div class="panel">
-            <div style="font-weight:900;">자녀 선택</div>
-            <div class="sub">동명이인 방지를 위해 생년월일/반 정보 표시</div>
-            <div class="row" style="margin-top:10px;">
-              <div class="pill">민수 (2019.03) • 햇님반</div>
-              <div class="pill">선택</div>
-            </div>
-            <div class="row" style="margin-top:8px;">
-              <div class="pill">윤아 (2018.11) • 별님반</div>
-              <div class="pill" style="background:#fff;">선택</div>
-            </div>
-          </div>
-          <div class="panel">
-            <div style="font-weight:900;">승인 대기</div>
-            <div class="sub">관리자 승인 후 알림 수신/셔틀 조회 가능 (폐쇄형 인증 3/3)</div>
-            <div class="pill" style="margin-top:8px;">승인 요청 전송됨</div>
-          </div>
-          <div class="panel">
-            <div style="font-weight:900;">로직</div>
-            <div class="sub">guardianRequest → adminApprove → relationshipActive → pushToken 등록</div>
-          </div>
-          <div class="nav">
-            <div class="tab active">홈</div><div class="tab">셔틀</div><div class="tab">서류</div><div class="tab">알림</div>
-          </div>
-        </div>
-      </div>
+        <div class="mockup-wrap">
+            <!-- Parent Home -->
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen">
+                    <div class="mock-title">
+                        <span>Scholix</span>
+                        <span class="pill">Parent</span>
+                    </div>
 
-      <!-- Mockup 3 -->
-      <div class="phone">
-        <div class="screen">
-          <div class="statusbar"><span>17:05</span><span>5G • 61%</span></div>
-          <div class="appbar">
-            <div class="title">오늘의 타임라인</div>
-            <div class="iconbtn">🔔</div>
-          </div>
-          <div class="panel">
-            <div class="row">
-              <div>
-                <div style="font-weight:900;">민수 • 햇님반</div>
-                <div class="sub">현재 상태: <strong>탑승 확인</strong></div>
-              </div>
-              <div class="pill">LIVE</div>
+                    <div class="tile">
+                        <div>
+                            <div class="k">오늘의 상태</div>
+                            <div class="v">귀가 진행중</div>
+                        </div>
+                        <div class="badge new">Live</div>
+                    </div>
+
+                    <div class="tile">
+                        <div>
+                            <div class="k">버스 탑승</div>
+                            <div class="v">16:12 완료</div>
+                        </div>
+                        <div class="badge ok">OK</div>
+                    </div>
+
+                    <div class="tile">
+                        <div>
+                            <div class="k">예상 도착</div>
+                            <div class="v">16:35</div>
+                        </div>
+                        <div class="badge">ETA</div>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn primary">안심 알림 보기</button>
+                    </div>
+                    <div class="row">
+                        <button class="btn danger">긴급 연락(기관)</button>
+                    </div>
+
+                    <div class="small">* 모든 정보는 “기록(로그)” 기반으로 제공됩니다.</div>
+                </div>
             </div>
-            <div style="margin-top:10px" class="map">
-              <div class="pin"></div>
+
+            <!-- Parent Forms -->
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen">
+                    <div class="mock-title">
+                        <span>민원/서류</span>
+                        <span class="pill">Forms</span>
+                    </div>
+
+                    <div class="tile">
+                        <div>
+                            <div class="k">투약의뢰서</div>
+                            <div class="v">작성/제출</div>
+                        </div>
+                        <div class="badge core">Core</div>
+                    </div>
+                    <div class="tile">
+                        <div>
+                            <div class="k">결석계</div>
+                            <div class="v">작성/제출</div>
+                        </div>
+                        <div class="badge">Doc</div>
+                    </div>
+                    <div class="tile">
+                        <div>
+                            <div class="k">귀가동의서</div>
+                            <div class="v">작성/제출</div>
+                        </div>
+                        <div class="badge">Consent</div>
+                    </div>
+
+                    <button class="btn primary">AI로 문장 다듬기</button>
+                    <div class="small">제출 전: 교사/관리자 승인 워크플로우 적용</div>
+                </div>
             </div>
-          </div>
-          <div class="panel">
-            <div style="font-weight:900;">이벤트</div>
-            <div class="timeline">
-              <div class="event"><span class="dot green"></span><div><div style="font-weight:900;">Gate-Out 완료</div><div class="sub">16:42 담임 확인</div></div></div>
-              <div class="event"><span class="dot"></span><div><div style="font-weight:900;">Boarding 완료</div><div class="sub">16:50 기사 태깅</div></div></div>
-              <div class="event"><span class="dot red"></span><div><div style="font-weight:900;">예외 감지</div><div class="sub">Drop-off 미확인 (경보 발송)</div></div></div>
+
+            <!-- Parent Alerts -->
+            <div class="phone">
+                <div class="notch"></div>
+                <div class="screen">
+                    <div class="mock-title">
+                        <span>알림 센터</span>
+                        <span class="pill">Inbox</span>
+                    </div>
+
+                    <div class="tile">
+                        <div>
+                            <div class="k">[탑승]</div>
+                            <div class="v">16:12 탑승 확인</div>
+                        </div>
+                        <div class="badge ok">OK</div>
+                    </div>
+
+                    <div class="tile">
+                        <div>
+                            <div class="k">[지연]</div>
+                            <div class="v">교통 상황으로 7분 지연</div>
+                        </div>
+                        <div class="badge new">Info</div>
+                    </div>
+
+                    <div class="tile" style="border-color: rgba(231,76,60,0.35);">
+                        <div>
+                            <div class="k" style="color:#FCA5A5;">[주의]</div>
+                            <div class="v">게이트아웃 OK / 탑승 미확인</div>
+                        </div>
+                        <div class="badge risk">Alert</div>
+                    </div>
+
+                    <div class="small">위험 알림은 “기관 대응 진행중” 상태로 업데이트됩니다.</div>
+                </div>
             </div>
-          </div>
-          <div class="panel">
-            <div style="font-weight:900;">로직</div>
-            <div class="sub">eventStream(GateOut/Board/Drop) → reconcile() → exceptionAlert() → parentPush()</div>
-          </div>
-          <div class="nav">
-            <div class="tab">홈</div><div class="tab active">셔틀</div><div class="tab">서류</div><div class="tab">알림</div>
-          </div>
         </div>
-      </div>
+
+        <div class="card" style="margin-top: 22px;">
+            <div class="card-header">학부모 앱 로직 고려(요약) <span class="badge core">Logic</span></div>
+            <div class="logic">
+                <h4>Parent App Domain Logic (개념 설계)</h4>
+                <pre>
+[1] Authentication
+- 초대코드 + 관리자 승인(기관 단위) + 보호자-원아 매핑(최소 데이터)
+- 기기 변경/재설치: 2단계(OTP/관리자 확인)로 계정 하이재킹 방지
+
+[2] Notification Policy
+- 이벤트 타입: GATE_OUT, BOARDING, DROP_OFF, DELAY, EXCEPTION, ADMIN_NOTICE
+- “추정” 문구 금지: 위치/도착예정은 ETA(계산값)로 라벨링
+- 위험 이벤트는 ACK(확인) 상태 관리: Parent ACK / Teacher ACK / Admin ACK
+
+[3] Forms Workflow (민원/서류)
+- Draft → Submit → Teacher Review → Admin Approval(optional) → Archived
+- 모든 단계 Audit Log 저장 (누가/언제/무엇을)
+- 개인정보 최소화: 필드 마스킹 + 기간 만료(보관/파기 정책)
+
+[4] Data Sync
+- Offline Queue(오프라인 제출) 지원
+- 서버 동기화 실패 시 재시도(지수 백오프) + 사용자 안내
+                </pre>
+            </div>
+        </div>
+
     </div>
-
-    <div class="card" style="margin-top: 18px;">
-      <div class="card-header">✅ 학부모 앱 “필수 로직” 체크리스트 <span class="badge core">MVP</span></div>
-      <div class="grid-3">
-        <div class="panel">
-          <div class="kpi">Auth</div>
-          <div class="sub">초대코드 + 휴대폰 인증 + 관리자 승인</div>
-          <div class="tiny muted">중요: 외부인 차단 / 보호자 권한 회수</div>
-        </div>
-        <div class="panel">
-          <div class="kpi">Push</div>
-          <div class="sub">Gate-Out/Board/Drop + 예외 알림</div>
-          <div class="tiny muted">중요: 푸시 토큰 갱신/무효 처리</div>
-        </div>
-        <div class="panel">
-          <div class="kpi">Forms</div>
-          <div class="sub">투약의뢰/결석/귀가동의 제출 + PDF 출력</div>
-          <div class="tiny muted">중요: 개인정보 최소화/승인 흐름</div>
-        </div>
-      </div>
-      <div class="ref-text">* 파일럿에서는 “광고/커머스”는 기본 OFF. 핵심 운영 KPI 검증을 우선</div>
-    </div>
-  </div>
 </div>
 
-<!-- 05 -->
-<div class="section">
-  <div class="container">
-    <h2>05. Financial Plan <span>수익 구조 및 손익 분석</span></h2>
-    <p style="margin-bottom:20px; color:#666;"><strong>[가정]</strong> 공립 단설 유치원 (5학급, 원아 100명, 버스 1대) 기준</p>
-
-    <div class="grid-2">
-      <div class="card">
-        <h3>💰 Pricing (단가표)</h3>
-        <table>
-          <thead>
-            <tr><th>항목</th><th>단가 (연간/VAT별도)</th><th>비고</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="left"><strong>① Basic Subscription</strong><br>(행정OS + 학부모앱)</td>
-              <td class="right">2,400,000 원</td>
-              <td>월 20만원<br>(기관 운영비)</td>
-            </tr>
-            <tr>
-              <td class="left"><strong>② Mobility Add-on</strong><br>(버스 위치관제 + 태깅)</td>
-              <td class="right">720,000 원</td>
-              <td>월 6만원<br>(차량당 과금)</td>
-            </tr>
-            <tr>
-              <td class="left"><strong>③ Initial Setup</strong><br>(DB이관 + 교육 + 태그)</td>
-              <td class="right">1,000,000 원</td>
-              <td>1회성 도입비<br>(NFC 태그 포함)</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr class="total-row"><td class="left">Total (ARPU)</td><td class="right">4,120,000 원</td><td>기관당 연매출</td></tr>
-          </tfoot>
-        </table>
-        <div class="ref-text">* 광고/커머스는 파일럿 이후 단계적 ON (가치 검증 후)</div>
-      </div>
-
-      <div class="card">
-        <h3>📈 Sales Projection (3개년)</h3>
-        <div class="chart-container" style="height: 180px;"><canvas id="financialChart"></canvas></div>
-        <div style="font-size:0.85rem; color:#666; margin-top:15px; text-align:center;">
-          * 2차년도부터 <strong>초등 늘봄교실</strong> 및 <strong>학부모 앱 광고</strong> 수익 본격화
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top: 30px;">
-      <h3>📉 1차년도 추정 손익계산서 (Pro Forma P&L)</h3>
-      <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">
-        <strong>* 목표:</strong> 유료 전환 100개소 (Pilot 50개 + Early 50개) 달성 기준
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <th width="15%">구분</th>
-            <th width="25%">항목</th>
-            <th width="40%">산출 근거 (Formula)</th>
-            <th width="20%">금액 (단위:원)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td rowspan="3" style="font-weight:900; color:var(--primary);">매출<br>(Revenue)</td>
-            <td class="left">서비스 구독료</td>
-            <td class="left">100개소 × (240만원 + 72만원)</td>
-            <td class="right">312,000,000</td>
-          </tr>
-          <tr>
-            <td class="left">초기 도입비</td>
-            <td class="left">100개소 × 100만원</td>
-            <td class="right">100,000,000</td>
-          </tr>
-          <tr>
-            <td class="left">광고/부가수익</td>
-            <td class="left">학부모 1만명 × 300원(CPM) × 12개월</td>
-            <td class="right">36,000,000</td>
-          </tr>
-          <tr class="bg-head"><td colspan="2" class="right">매출 합계</td><td colspan="2" class="right" style="color:var(--primary);">448,000,000</td></tr>
-
-          <tr>
-            <td rowspan="3" style="font-weight:900; color:var(--accent);">비용<br>(Expense)</td>
-            <td class="left">매출원가</td>
-            <td class="left">서버비, 지도API, NFC태그</td>
-            <td class="right">40,000,000</td>
-          </tr>
-          <tr>
-            <td class="left">인건비/판관비</td>
-            <td class="left">개발/영업 인력 + 마케팅</td>
-            <td class="right">270,000,000</td>
-          </tr>
-          <tr>
-            <td class="left">기타비용</td>
-            <td class="left">예비비 등</td>
-            <td class="right">0</td>
-          </tr>
-          <tr class="bg-head"><td colspan="2" class="right">비용 합계</td><td colspan="2" class="right" style="color:var(--accent);">310,000,000</td></tr>
-
-          <tr class="total-row">
-            <td colspan="2">영업이익 (Profit)</td>
-            <td class="left">영업이익률 30.8%</td>
-            <td class="right">138,000,000</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- 06 -->
-<div class="section">
-  <div class="container">
-    <h2>06. Roadmap <span>단계별 실행 계획</span></h2>
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-header" style="color:var(--text-sub);">Phase 1. 검증 (M1~4)</div>
-        <h3 style="color:var(--primary); margin:0 0 10px 0;">MVP & Pilot</h3>
-        <p style="font-weight:900; margin-bottom:5px;">Target: 5~10개소</p>
-        <ul style="font-size:0.9rem; padding-left:20px;">
-          <li>핵심 기능(태깅/일지/문서) 개발 완료</li>
-          <li>단설 유치원 5곳 파일럿 테스트</li>
-          <li>NFC 인식률 및 데이터 정합성 검증</li>
-          <li>NEIS 입력용 산출물(복붙/서식) 검증</li>
-          <li><strong>* 매출 목표: 0원 (Free Pilot)</strong></li>
-        </ul>
-      </div>
-      <div class="card" style="border-top:4px solid var(--secondary);">
-        <div class="card-header" style="color:var(--secondary);">Phase 2. 진입 (M5~12)</div>
-        <h3 style="color:var(--primary); margin:0 0 10px 0;">Market Entry</h3>
-        <p style="font-weight:900; margin-bottom:5px;">Target: 50~100개소</p>
-        <ul style="font-size:0.9rem; padding-left:20px;">
-          <li>유료화 전환 (구독 모델 시작)</li>
-          <li>"장비값 0원" 입학 시즌 캠페인</li>
-          <li>교육지원청 시범사업 제안</li>
-          <li>학부모 앱 기능 확장(서류 제출/알림)</li>
-          <li><strong>* 매출 목표: 2~4억 원</strong></li>
-        </ul>
-      </div>
-      <div class="card" style="border-top:4px solid var(--primary);">
-        <div class="card-header" style="color:var(--primary);">Phase 3. 확장 (Year 2)</div>
-        <h3 style="color:var(--primary); margin:0 0 10px 0;">Scale-Up</h3>
-        <p style="font-weight:900; margin-bottom:5px;">Target: 300+ & Elementary</p>
-        <ul style="font-size:0.9rem; padding-left:20px;">
-          <li><strong>초등 돌봄/늘봄교실</strong> 패키지 런칭</li>
-          <li>조달청(벤처나라) 등록</li>
-          <li>학부모 앱 커머스/광고 고도화(필요 시)</li>
-          <li>기관별 버스/업체 로그 “업로드 표준” 제공</li>
-          <li><strong>* 매출 목표: 15억 원+</strong></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 07 -->
+<!-- v7.3 ADD: Suite Expansion -->
 <div class="section" style="background: var(--bg-light);">
-  <div class="container">
-    <h2>07. References <span>근거/출처</span></h2>
-    <ol style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.9;">
-      <li>학교안전공제중앙회, 「2024 학교안전사고 통계 분석」 (유치원 9,802건). <strong>(Ref-1)</strong></li>
-      <li>유치원알리미(교육부), 유치원 현황 공시(국공립/사립). <strong>(Ref-2)</strong></li>
-      <li>교육부, 「2025년 교육기본통계 조사 결과」(유치원 학생 수 등). <strong>(Ref-3)</strong></li>
-      <li>OECD, TALIS 2024 Korea Country Note (행정업무 시간). <strong>(Ref-4)</strong></li>
-      <li>보령교육지원청, DTG/통신비 안내(단말 비용·통신비). <strong>(Ref-5)</strong></li>
-      <li>법제처 보도자료(2017-05-31), 어린이통학버스 하차 확인 의무 및 범칙금. <strong>(Ref-6)</strong></li>
-      <li>BMJ Injury Prevention 2025, telematics/camera 기반 안전정책 효과(충돌·급제동 감소). <strong>(Ref-7)</strong></li>
-    </ol>
-    <p class="ref-text">* 본 페이지는 제출/배포용 “시각화·스토리텔링” 산출물입니다. Pilot 실측치 확보 시 가정값(추정)을 실측치로 치환하여 근거 수준을 상향하십시오.</p>
-  </div>
+    <div class="container">
+        <h2>04-B. App Suite Expansion <span>학부모앱 확장 + 교사앱 + 버스(기사)앱 + 관리자/관제</span></h2>
+
+        <div class="suite">
+            <div class="suite-grid">
+                <div class="suite-card">
+                    <div class="card-header" style="border:0; padding:0; margin:0 0 10px 0;">
+                        <div>학부모 앱 (Parent)</div>
+                        <span class="badge">App</span>
+                    </div>
+                    <ul>
+                        <li>탑승/하차/지연 알림 + 위험 이벤트 ACK</li>
+                        <li>투약의뢰/결석계/귀가동의서 제출 + 상태 추적</li>
+                        <li>공지/가정통신문 수신(승인된 콘텐츠만)</li>
+                        <li>개인정보 최소화(마스킹/만료/초대 기반)</li>
+                    </ul>
+                </div>
+
+                <div class="suite-card">
+                    <div class="card-header" style="border:0; padding:0; margin:0 0 10px 0;">
+                        <div>교사 앱 (Teacher)</div>
+                        <span class="badge core">Core</span>
+                    </div>
+                    <ul>
+                        <li>Gate-Out(하원) 체크: 1탭/스캔 + 예외처리</li>
+                        <li>AI 문서화: 사고/안전/투약/상담 기록 Draft 생성</li>
+                        <li>민원 서류 검수/승인 워크플로우</li>
+                        <li>NEIS “연동형” 출력/업로드 준비(파일 중심)</li>
+                    </ul>
+                </div>
+
+                <div class="suite-card">
+                    <div class="card-header" style="border:0; padding:0; margin:0 0 10px 0;">
+                        <div>버스/기사 앱 (Driver)</div>
+                        <span class="badge new">Mobility</span>
+                    </div>
+                    <ul>
+                        <li>Boarding/Drop-off 태깅(스마트폰 NFC/QR)</li>
+                        <li>노선 시작 전 정합성 체크(미탑승 존재 시 경보)</li>
+                        <li>오프라인 구간 임시 저장 → 복구 동기화</li>
+                        <li>운행일지 자동 생성(시간/정차/예외)</li>
+                    </ul>
+                </div>
+
+                <div class="suite-card">
+                    <div class="card-header" style="border:0; padding:0; margin:0 0 10px 0;">
+                        <div>관리자/관제 (Admin)</div>
+                        <span class="badge">Console</span>
+                    </div>
+                    <ul>
+                        <li>권한(RBAC): 담임/보조/기사/원장</li>
+                        <li>감사로그(Audit): 생성/수정/승인/배포/다운로드</li>
+                        <li>위험 이벤트 모니터링 + 대응 타임라인</li>
+                        <li>파일럿 통계 대시보드(업무시간/사고/누락)</li>
+                    </ul>
+                </div>
+
+                <div class="suite-card">
+                    <div class="card-header" style="border:0; padding:0; margin:0 0 10px 0;">
+                        <div>통합 데이터 정책</div>
+                        <span class="badge ok">Policy</span>
+                    </div>
+                    <ul>
+                        <li>최소 수집(필수만): 원아/보호자 식별 최소화</li>
+                        <li>보관/파기: 기관 정책에 맞춘 기간 기반 삭제</li>
+                        <li>민감정보: 기본 차단 + 관리자 승인 필수 플래그</li>
+                        <li>감사 대응: 로그/증빙 자동 패키징(내보내기)</li>
+                    </ul>
+                </div>
+
+                <div class="suite-card">
+                    <div class="card-header" style="border:0; padding:0; margin:0 0 10px 0;">
+                        <div>초보 개발자 친화 구현전략</div>
+                        <span class="badge">MVP</span>
+                    </div>
+                    <ul>
+                        <li>연동 최소화: “파일 출력 + 업로드” 중심으로 설계</li>
+                        <li>복잡 기능 단계화: 알림/태깅/승인부터 선 구현</li>
+                        <li>예외/실패 우선 설계: 오프라인·재시도·로그</li>
+                        <li>하드웨어 無: 스마트폰/NFC 스티커로만</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 18px;">
+            <div class="card">
+                <div class="card-header">권한(RBAC) 매트릭스(초안) <span class="badge core">Security</span></div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>기능</th>
+                            <th>담임</th>
+                            <th>보조/부담임</th>
+                            <th>기사</th>
+                            <th>원장/관리자</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="left">Gate-Out(하원) 체크</td>
+                            <td>O</td><td>O</td><td>X</td><td>O</td>
+                        </tr>
+                        <tr>
+                            <td class="left">Boarding/Drop-off 태깅</td>
+                            <td>보기</td><td>보기</td><td>O</td><td>O</td>
+                        </tr>
+                        <tr>
+                            <td class="left">민원서류 승인</td>
+                            <td>1차</td><td>보조</td><td>X</td><td>최종</td>
+                        </tr>
+                        <tr>
+                            <td class="left">감사로그/내보내기</td>
+                            <td>보기</td><td>X</td><td>X</td><td>O</td>
+                        </tr>
+                        <tr>
+                            <td class="left">사용자/초대코드 관리</td>
+                            <td>X</td><td>X</td><td>X</td><td>O</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="ref-text">* 기관 정책에 따라 조정 가능. 기본값은 최소권한 원칙(Least Privilege).</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">감사로그(Audit) 이벤트 표준 <span class="badge">Audit</span></div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>이벤트</th>
+                            <th>필드(예시)</th>
+                            <th>목적</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="left">CREATE_DOC</td>
+                            <td class="left">actor, docType, docId, timestamp</td>
+                            <td class="left">문서 생성 추적</td>
+                        </tr>
+                        <tr>
+                            <td class="left">APPROVE_DOC</td>
+                            <td class="left">actor, docId, stage, comment</td>
+                            <td class="left">검수/승인 이력</td>
+                        </tr>
+                        <tr>
+                            <td class="left">TRANSIT_EVENT</td>
+                            <td class="left">studentId, busId, eventType, gps?</td>
+                            <td class="left">승하차/정합성</td>
+                        </tr>
+                        <tr>
+                            <td class="left">ALERT_RAISED</td>
+                            <td class="left">rule, severity, correlationId</td>
+                            <td class="left">위험 대응 체계</td>
+                        </tr>
+                        <tr>
+                            <td class="left">EXPORT_PACKAGE</td>
+                            <td class="left">scope, range, requester</td>
+                            <td class="left">감사/민원 대응</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="ref-text">* 개인정보 최소화 원칙 준수: 출력 시 마스킹/기간 제한 적용.</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 18px;">
+            <div class="card-header">핵심 데이터 정합성 규칙(Triple-Check Engine) <span class="badge new">Rules</span></div>
+            <div class="logic">
+                <h4>Reconciliation Rules (MVP 우선순위 포함)</h4>
+                <pre>
+Rule-1 (High): GATE_OUT=TRUE & BOARDING=FALSE within T minutes
+- 즉시 알림: Teacher + Admin + Driver
+- 차량 출발 전: Driver App "출발 차단" (soft-lock)
+- 예외 처리: Admin Override(사유 필수) → Audit
+
+Rule-2 (High): BOARDING=TRUE & DROP_OFF=FALSE at route end
+- 종점/노선 종료 시 "미하차" 목록 고정 노출
+- Driver must resolve: Drop-off scan or Manual fallback + photo optional
+- Parent notification: "확인 중" 상태 유지(추정 표현 금지)
+
+Rule-3 (Medium): Duplicate scan / Out-of-order events
+- 마지막 이벤트 기준 정렬 + 중복 제거
+- 수동 수정은 Admin만 가능(사유/승인 로그)
+
+Rule-4 (Ops): Offline queue replay
+- eventId(ULID) + idempotencyKey
+- 서버는 idempotent upsert 처리(중복 수신 방지)
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="container">
+        <h2>05. Financial Plan <span>수익 구조 및 손익 분석</span></h2>
+        <p style="margin-bottom:20px; color:#666;"><strong>[가정]</strong> 공립 단설 유치원 (5학급, 원아 100명, 버스 1대) 기준</p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>💰 Pricing (단가표)</h3>
+                <table>
+                    <thead>
+                        <tr><th>항목</th><th>단가 (연간/VAT별도)</th><th>비고</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="left"><strong>① Basic Subscription</strong><br>(행정OS + 학부모앱)</td><td class="right">2,400,000 원</td><td>월 20만원<br>(기관 운영비)</td></tr>
+                        <tr><td class="left"><strong>② Mobility Add-on</strong><br>(버스 위치관제 + 태깅)</td><td class="right">720,000 원</td><td>월 6만원<br>(차량당 과금)</td></tr>
+                        <tr><td class="left"><strong>③ Initial Setup</strong><br>(DB이관 + 교육 + 태그)</td><td class="right">1,000,000 원</td><td>1회성 도입비<br>(NFC 태그 포함)</td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row"><td class="left">Total (ARPU)</td><td class="right">4,120,000 원</td><td>기관당 연매출</td></tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>📈 Sales Projection (3개년)</h3>
+                <div class="chart-container" style="height: 180px;"><canvas id="financialChart"></canvas></div>
+                <div style="font-size:0.85rem; color:#666; margin-top:15px; text-align:center;">
+                    * 2차년도부터 <strong>초등 늘봄교실</strong> 및 <strong>학부모 앱 광고</strong> 수익 본격화
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 30px;">
+            <h3>📉 1차년도 추정 손익계산서 (Pro Forma P&L)</h3>
+            <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">
+                <strong>* 목표:</strong> 유료 전환 100개소 (Pilot 50개 + Early 50개) 달성 기준
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="15%">구분</th>
+                        <th width="25%">항목</th>
+                        <th width="40%">산출 근거 (Formula)</th>
+                        <th width="20%">금액 (단위:원)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="3" style="font-weight:bold; color:var(--primary);">매출<br>(Revenue)</td>
+                        <td class="left">서비스 구독료</td>
+                        <td class="left">100개소 × (240만원 + 72만원)</td>
+                        <td class="right">312,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="left">초기 도입비</td>
+                        <td class="left">100개소 × 100만원</td>
+                        <td class="right">100,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="left">광고/부가수익</td>
+                        <td class="left">학부모 1만명 × 300원(CPM) × 12개월</td>
+                        <td class="right">36,000,000</td>
+                    </tr>
+                    <tr class="bg-head"><td colspan="2" class="right">매출 합계</td><td colspan="2" class="right" style="color:var(--primary);">448,000,000</td></tr>
+
+                    <tr>
+                        <td rowspan="3" style="font-weight:bold; color:var(--accent);">비용<br>(Expense)</td>
+                        <td class="left">매출원가</td>
+                        <td class="left">서버비, 지도API, NFC태그</td>
+                        <td class="right">40,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="left">인건비/판관비</td>
+                        <td class="left">개발/영업 인력 + 마케팅</td>
+                        <td class="right">270,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="left">기타비용</td>
+                        <td class="left">예비비 등</td>
+                        <td class="right">0</td>
+                    </tr>
+                    <tr class="bg-head"><td colspan="2" class="right">비용 합계</td><td colspan="2" class="right" style="color:var(--accent);">310,000,000</td></tr>
+
+                    <tr class="total-row">
+                        <td colspan="2">영업이익 (Profit)</td>
+                        <td class="left">영업이익률 30.8%</td>
+                        <td class="right">138,000,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="container">
+        <h2>06. Roadmap <span>단계별 실행 계획</span></h2>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-header" style="color:var(--text-sub);">Phase 1. 검증 (M1~4)</div>
+                <h3 style="color:var(--primary); margin:0 0 10px 0;">MVP & Pilot</h3>
+                <p style="font-weight:bold; margin-bottom:5px;">Target: 5~10개소</p>
+                <ul style="font-size:0.9rem; padding-left:20px;">
+                    <li>핵심 기능(태깅/일지) 개발 완료</li>
+                    <li>단설 유치원 5곳 파일럿 테스트</li>
+                    <li>NFC 인식률 및 데이터 정합성 검증</li>
+                    <li><strong>* 매출 목표: 0원 (Free Pilot)</strong></li>
+                </ul>
+            </div>
+            <div class="card" style="border-top:4px solid var(--secondary);">
+                <div class="card-header" style="color:var(--secondary);">Phase 2. 진입 (M5~12)</div>
+                <h3 style="color:var(--primary); margin:0 0 10px 0;">Market Entry</h3>
+                <p style="font-weight:bold; margin-bottom:5px;">Target: 50~100개소</p>
+                <ul style="font-size:0.9rem; padding-left:20px;">
+                    <li>유료화 전환 (구독 모델 시작)</li>
+                    <li>"장비값 0원" 입학 시즌 캠페인</li>
+                    <li>교육지원청 시범사업 제안</li>
+                    <li><strong>* 매출 목표: 2~4억 원</strong></li>
+                </ul>
+            </div>
+            <div class="card" style="border-top:4px solid var(--primary);">
+                <div class="card-header" style="color:var(--primary);">Phase 3. 확장 (Year 2)</div>
+                <h3 style="color:var(--primary); margin:0 0 10px 0;">Scale-Up</h3>
+                <p style="font-weight:bold; margin-bottom:5px;">Target: 300+ & Elementary</p>
+                <ul style="font-size:0.9rem; padding-left:20px;">
+                    <li><strong>초등 돌봄/늘봄교실</strong> 패키지 런칭</li>
+                    <li>조달청(벤처나라) 등록</li>
+                    <li>학부모 앱 커머스/광고 고도화</li>
+                    <li><strong>* 매출 목표: 15억 원+</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section" style="background: var(--bg-light);">
+    <div class="container">
+        <h2>07. References <span>근거/출처</span></h2>
+        <ol style="color: var(--text-sub); font-size: 0.95rem; line-height: 1.9;">
+            <li>학교안전공제중앙회, 「2024 학교안전사고 통계 분석」 (유치원 9,802건). <strong>(Ref-1)</strong></li>
+            <li>유치원알리미(교육부), 유치원 현황 공시(국공립/사립). <strong>(Ref-2)</strong></li>
+            <li>교육부, 「2025년 교육기본통계 조사 결과」(유치원 학생 수 등). <strong>(Ref-3)</strong></li>
+            <li>OECD, TALIS 2024 Korea Country Note (행정업무 시간). <strong>(Ref-4)</strong></li>
+            <li>보령교육지원청, DTG/통신비 안내(단말 비용·통신비). <strong>(Ref-5)</strong></li>
+            <li>법제처 보도자료(2017-05-31), 어린이통학버스 하차 확인 의무 및 범칙금. <strong>(Ref-6)</strong></li>
+            <li>BMJ Injury Prevention 2025, telematics/camera 기반 안전정책 효과(충돌·급제동 감소). <strong>(Ref-7)</strong></li>
+        </ol>
+        <p class="ref-text">* 본 페이지는 제출/배포용 “시각화·스토리텔링” 산출물입니다. Pilot 실측치 확보 시 가정값(추정)을 실측치로 치환하여 근거 수준을 상향하십시오.</p>
+    </div>
 </div>
 
 <footer>
-  <div class="container" style="text-align: center; color: #666; font-size: 0.9rem; padding: 40px 0;">
-    <p><strong>Scholix Business Plan</strong> | 예비창업패키지 제출용 v7.2 (Source Included)</p>
-    <p>© 2026 Scholix Team. All Rights Reserved.</p>
-  </div>
+    <div class="container" style="text-align: center; color: #666; font-size: 0.9rem; padding: 40px 0;">
+        <p><strong>Scholix Business Plan</strong> | 예비창업패키지 최종 제출용 v7.3</p>
+        <p>© 2026 Scholix Team. All Rights Reserved.</p>
+    </div>
 </footer>
 
-<div class="download-bar">
-  <button class="btn ghost" onclick="toggleDevPanel()">🧩 Dev Panel</button>
-  <button class="btn secondary" onclick="exportJson()">⬇️ Sample Export</button>
-</div>
 <button class="print-btn" onclick="window.print()">🖨️ PDF 저장 / 인쇄</button>
 
-<!-- Dev Panel (optional, for demo) -->
-<div id="devPanel" style="display:none; position: fixed; top: 18px; right: 18px; width: 360px; z-index: 1000;">
-  <div class="card" style="box-shadow: var(--shadow); border: 1px solid #0f172a1a;">
-    <div class="card-header">Dev Panel <span class="badge">Demo</span></div>
-    <div class="small muted">
-      이 패널은 “로직 고려”를 소스에 포함하기 위한 데모 컨트롤입니다. (실서비스에서는 서버/앱으로 분리)
-    </div>
-    <div class="panel">
-      <div style="font-weight:900;">이벤트 시뮬레이션</div>
-      <div class="chips">
-        <button class="btn ghost" onclick="emitEvent('GATE_OUT')">Gate-Out</button>
-        <button class="btn ghost" onclick="emitEvent('BOARD')">Board</button>
-        <button class="btn ghost" onclick="emitEvent('DROP')">Drop</button>
-        <button class="btn ghost" onclick="emitEvent('EXCEPTION')">Exception</button>
-      </div>
-      <div class="tiny muted" style="margin-top:8px;">* 이벤트는 “원천 로그”로 적재된 후, reconcile 규칙으로 경보/알림을 파생합니다.</div>
-    </div>
-    <div class="panel">
-      <div style="font-weight:900;">마지막 이벤트</div>
-      <div id="lastEvent" class="sub">-</div>
-    </div>
-  </div>
-</div>
-
 <script>
-  // ============================
-  // Charts (same structure as v7.0)
-  // ============================
+    // 1. TCO Comparison Chart
+    const tcoCtx = document.getElementById('tcoChart').getContext('2d');
+    new Chart(tcoCtx, {
+        type: 'bar',
+        data: {
+            labels: ['1년차', '2년차', '3년차'],
+            datasets: [
+                { label: '기존: 단말+통신 (근거 기반)', data: [110, 40, 40], backgroundColor: '#2980b9' },
+                { label: '기존: 단말+통신+관제SaaS (가정)', data: [180, 110, 110], backgroundColor: '#e67e22' },
+                { label: 'Scholix: 무설치 구독+도입비', data: [240, 140, 140], backgroundColor: '#27ae60' }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.raw + '만원'; } } } },
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: '연간 비용 (만원)' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
 
-  // 1) TCO Comparison Chart
-  const tcoCtx = document.getElementById('tcoChart').getContext('2d');
-  new Chart(tcoCtx, {
-    type: 'bar',
-    data: {
-      labels: ['1년차', '2년차', '3년차'],
-      datasets: [
-        { label: '기존: 단말+통신 (근거 기반)', data: [110, 40, 40], backgroundColor: '#2980b9' },
-        { label: '기존: 단말+통신+관제SaaS (가정)', data: [180, 110, 110], backgroundColor: '#e67e22' },
-        { label: 'Scholix: 무설치 구독+도입비', data: [240, 140, 140], backgroundColor: '#27ae60' }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw}만원` } } },
-      scales: {
-        y: { beginAtZero: true, title: { display: true, text: '연간 비용 (만원)' } },
-        x: { grid: { display: false } }
-      }
-    }
-  });
+    // 2. Accident Scale Chart
+    const accCtx = document.getElementById('accidentChart').getContext('2d');
+    new Chart(accCtx, {
+        type: 'bar',
+        data: {
+            labels: ['유치원 안전사고(2024)'],
+            datasets: [{ label: '발생 건수', data: [9802], backgroundColor: '#E74C3C' }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: '건수' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
 
-  // 2) Accident Scale Chart
-  const accCtx = document.getElementById('accidentChart').getContext('2d');
-  new Chart(accCtx, {
-    type: 'bar',
-    data: {
-      labels: ['유치원 안전사고(2024)'],
-      datasets: [{ label: '발생 건수', data: [9802], backgroundColor: '#E74C3C' }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { beginAtZero: true, title: { display: true, text: '건수' } },
-        x: { grid: { display: false } }
-      }
-    }
-  });
+    // 3. Annual Value Chart
+    const valCtx = document.getElementById('valueChart').getContext('2d');
+    new Chart(valCtx, {
+        type: 'bar',
+        data: {
+            labels: ['행정시간 절감', '법규 위반 리스크', '안전운전 개선'],
+            datasets: [{
+                label: '가치 (만원)',
+                data: [308, 26, 10],
+                backgroundColor: ['#2980b9', '#e67e22', '#27ae60']
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: '가치 (만원)' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
 
-  // 3) Annual Value Chart
-  const valCtx = document.getElementById('valueChart').getContext('2d');
-  new Chart(valCtx, {
-    type: 'bar',
-    data: {
-      labels: ['행정시간 절감', '법규 위반 리스크', '안전운전 개선'],
-      datasets: [{ label: '가치 (만원)', data: [308, 26, 10], backgroundColor: ['#2980b9', '#e67e22', '#27ae60'] }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { beginAtZero: true, title: { display: true, text: '가치 (만원)' } },
-        x: { grid: { display: false } }
-      }
-    }
-  });
-
-  // 4) Financial Projection Chart
-  new Chart(document.getElementById('financialChart'), {
-    type: 'bar',
-    data: {
-      labels: ['1차년도 (진입)', '2차년도 (확장)', '3차년도 (도약)'],
-      datasets: [
-        { label: '기관 구독 매출', data: [3.1, 12.5, 35.0], backgroundColor: '#153E7E', stack: 'Stack 0' },
-        { label: '도입/부가 매출', data: [1.0, 3.5, 8.0], backgroundColor: '#00B4D8', stack: 'Stack 0' },
-        { label: '광고/커머스', data: [0.36, 2.5, 12.0], backgroundColor: '#F4A261', stack: 'Stack 0' }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw}억원` } } },
-      scales: {
-        y: { beginAtZero: true, title: { display: true, text: '매출 (억 원)' } },
-        x: { grid: { display: false } }
-      }
-    }
-  });
-
-  // ============================
-  // Parent App Logic Consideration (Demo-Level)
-  // ============================
-  // 이벤트 정합성(Triple-Check) 핵심 규칙을 "소스에 포함" (제품 로직 설계 의도 명확화)
-  // - 실서비스에서는 서버 권위 + 감사로그 + 푸시/메시지 큐로 구현 권장
-  const state = {
-    last: null,
-    gateOutAt: null,
-    boardAt: null,
-    dropAt: null,
-    exception: null
-  };
-
-  function nowISO(){
-    const d = new Date();
-    return d.toISOString();
-  }
-
-  function emitEvent(type){
-    // NOTE: 최소 구현에서는 서버 대신 클라이언트에서 이벤트를 생성(데모)
-    // 실제: Teacher/Driver 앱에서 이벤트 생성 → 서버 저장 → reconcile → 알림/경보
-    const t = nowISO();
-    state.last = { type, at: t };
-
-    if(type === 'GATE_OUT') state.gateOutAt = t;
-    if(type === 'BOARD') state.boardAt = t;
-    if(type === 'DROP') state.dropAt = t;
-    if(type === 'EXCEPTION') state.exception = t;
-
-    // reconcile
-    const result = reconcile(state);
-    document.getElementById('lastEvent').innerText =
-      `${type} @ ${t}\n` +
-      `Reconcile: ${result.status} (${result.reason})`;
-
-    // demo: push simulation
-    if(result.alert){
-      console.log('[PUSH] Exception alert sent to parent:', result);
-    }
-  }
-
-  function reconcile(s){
-    // 핵심 예외:
-    // 1) Gate-Out 되었는데 일정 시간 내 Boarding 없음 → 미탑승 예외
-    // 2) Boarding 되었는데 일정 시간 내 Drop 없음 → 미하차 예외
-    // 3) Drop만 있고 Boarding 없음 → 데이터 누락 예외
-    // (시간 임계값은 기관 정책으로 설정: 기본 15~30분 등)
-    const THRESH_MIN = 30;
-
-    const ts = (x) => x ? new Date(x).getTime() : null;
-    const minutesBetween = (a, b) => Math.round((b-a)/60000);
-
-    const go = ts(s.gateOutAt);
-    const bo = ts(s.boardAt);
-    const dr = ts(s.dropAt);
-    const la = ts(s.last?.at);
-
-    if(!go && (bo || dr)){
-      return { status:'WARN', reason:'Gate-Out 누락', alert:true };
-    }
-    if(go && !bo && la && minutesBetween(go, la) > THRESH_MIN){
-      return { status:'ALERT', reason:'미탑승(시간초과)', alert:true };
-    }
-    if(bo && !dr && la && minutesBetween(bo, la) > THRESH_MIN){
-      return { status:'ALERT', reason:'미하차(시간초과)', alert:true };
-    }
-    if(dr && !bo){
-      return { status:'WARN', reason:'Boarding 누락(데이터 정합성)', alert:true };
-    }
-    if(s.exception){
-      return { status:'ALERT', reason:'수동 예외 등록', alert:true };
-    }
-    return { status:'OK', reason:'정상', alert:false };
-  }
-
-  // ============================
-  // Export (sample)
-  // ============================
-  function exportJson(){
-    const sample = {
-      schema: "ScholixEventExport.v1",
-      note: "NEIS 공존(무연동) 운영을 위한 샘플 산출물 (복붙/다운로드용)",
-      child: { name: "민수", class: "햇님반" },
-      events: [
-        { type: "GATE_OUT", at: state.gateOutAt || null },
-        { type: "BOARD", at: state.boardAt || null },
-        { type: "DROP", at: state.dropAt || null }
-      ],
-      reconcile: reconcile(state),
-      generatedAt: nowISO()
-    };
-
-    const blob = new Blob([JSON.stringify(sample, null, 2)], { type: "application/json;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "scholix_sample_export.json";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  function toggleDevPanel(){
-    const el = document.getElementById('devPanel');
-    el.style.display = (el.style.display === 'none' || !el.style.display) ? 'block' : 'none';
-  }
+    // 4. Financial Projection Chart
+    new Chart(document.getElementById('financialChart'), {
+        type: 'bar',
+        data: {
+            labels: ['1차년도 (진입)', '2차년도 (확장)', '3차년도 (도약)'],
+            datasets: [
+                { label: '기관 구독 매출', data: [3.1, 12.5, 35.0], backgroundColor: '#153E7E', stack: 'Stack 0' },
+                { label: '도입/부가 매출', data: [1.0, 3.5, 8.0], backgroundColor: '#00B4D8', stack: 'Stack 0' },
+                { label: '광고/커머스', data: [0.36, 2.5, 12.0], backgroundColor: '#F4A261', stack: 'Stack 0' }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.raw + '억원'; } } } },
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: '매출 (억 원)' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
 </script>
+
 </body>
 </html>
